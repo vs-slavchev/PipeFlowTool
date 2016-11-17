@@ -13,9 +13,9 @@ public class RectangleCollisionMask extends CollisionMask {
 
     @Override
     public boolean hasCollision(Point point) {
-        return point.getX() > centerPoint.getX() - width/2
-                && point.getX() < centerPoint.getX() + width/2
-                && point.getY() > centerPoint.getY() - height/2
-                && point.getY() < centerPoint.getY() + height/2;
+        return point.getX() > this.getX() - width/2
+                && point.getX() < this.getX() + width/2
+                && point.getY() > this.getY() - height/2
+                && point.getY() < this.getY() + height/2;
     }
 }

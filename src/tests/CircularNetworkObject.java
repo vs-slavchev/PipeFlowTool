@@ -1,7 +1,7 @@
 package tests;
 
 import collision.CircleCollisionMask;
-import objects.NetworkObject;
+import object.NetworkObject;
 
 public class CircularNetworkObject extends NetworkObject {
 

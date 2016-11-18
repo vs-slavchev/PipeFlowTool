@@ -27,7 +27,9 @@ public class ScreenPanel extends JPanel {
     private void addMouseListener() {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                networkManager.add(new Pump(e.getX() - 200, e.getY()));
+                networkManager.add(new Pump(e.getX(), e.getY()));
+
+                System.out.println(askForInput());
 
                 repaint();
             }
@@ -41,6 +43,18 @@ public class ScreenPanel extends JPanel {
         gr.drawString("ello bois", 10, 20);
 
         networkManager.drawAllObjects(gr);
+    }
+
+    public String askForInput() {
+        return (String)JOptionPane.showInputDialog(
+                this,
+                "Specify flow and capacity:\n"
+                        + "examples: \"8/10\" or \"10\" (short for 10/10)",
+                "Properties", // window title
+                JOptionPane.QUESTION_MESSAGE,
+                UIManager.getIcon("FileChooser.detailsViewIcon"),
+                null,
+                "10"); // default text
     }
 
     public Dimension getPreferredSize() {

@@ -6,8 +6,7 @@ public class CircleCollisionMask extends CollisionMask {
 
     private int radius;
 
-    /**
-     * Construct a circular collision mask.
+    /** Construct a circular collision mask.
      * @param radius The radius of the circle */
     public CircleCollisionMask(int radius) {
         this.radius = radius;

@@ -27,7 +27,7 @@ public class ScreenPanel extends JPanel {
     private void addMouseListener() {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                networkManager.add(new Pump(e.getX(), e.getY()));
+                networkManager.add(new Pump(e.getX() - 200, e.getY()));
 
                 repaint();
             }

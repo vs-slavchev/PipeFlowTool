@@ -2,12 +2,10 @@ package utility;
 
 import file.ImageManager;
 import object.NetworkManager;
-import object.Pump;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ScreenPanel extends JPanel {
 
@@ -25,15 +23,9 @@ public class ScreenPanel extends JPanel {
     }
 
     private void addMouseListener() {
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                networkManager.add(new Pump(e.getX(), e.getY()));
-
-                System.out.println(askForInput());
-
-                repaint();
-            }
-        });
+        MouseAdapter adapter = new ScreenMouseListener(this);
+        addMouseListener(adapter);
+        addMouseMotionListener(adapter);
     }
 
     protected void paintComponent(Graphics gr) {
@@ -66,6 +58,10 @@ public class ScreenPanel extends JPanel {
         GraphicsDevice device = env.getScreenDevices()[0];
         Rectangle screenRectangle = device.getDefaultConfiguration().getBounds();
         screenWidth = screenRectangle.width;
-        screenHeight = screenRectangle.height;
+        screenHeight = screenRectangle.height - 400;
+    }
+
+    public NetworkManager getNetworkManager() {
+        return networkManager;
     }
 }

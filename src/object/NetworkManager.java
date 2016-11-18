@@ -13,8 +13,11 @@ public class NetworkManager {
     }
 
     public void drawAllObjects(Graphics g) {
-        for (NetworkObject obj : objects) {
-            obj.draw(g);
-        }
+        objects.forEach(obj -> obj.draw(g));
+    }
+
+    /** Use for moving all objects or making it look like we are moving the viewport. */
+    public void translateAll(final int x, final int y) {
+        objects.forEach(obj -> obj.translate(x, y));
     }
 }

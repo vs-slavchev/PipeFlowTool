@@ -27,4 +27,8 @@ public abstract class NetworkObject {
         int offsetUp = collisionMask.getY() - halfHeight;
         gr.drawImage(image, offsetLeft, offsetUp, null);
     }
+
+    public void translate(final int x, final int y) {
+        collisionMask.translate(x, y);
+    }
 }

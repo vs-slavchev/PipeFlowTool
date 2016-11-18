@@ -22,4 +22,9 @@ import java.awt.Point;
 
     /** Called when checking if a point is inside the collision mask. */
     public abstract boolean hasCollision(final Point point);
+
+    public void translate(final int x, final int y) {
+        this.x += x;
+        this.y += y;
+    }
 }

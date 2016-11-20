@@ -5,12 +5,13 @@ import utility.PipeToolFatalError;
 import java.util.HashMap;
 import java.util.Map;
 
+/** A static class responsible for loading and retrieving images. */
 public class ImageManager {
 
     private final static String extension = ".png";
     private static Map<String, Image> images = new HashMap<>();
 
-    public static void initImages() {
+    public static void initializeImages() {
         loadImage("pump");
     }
 

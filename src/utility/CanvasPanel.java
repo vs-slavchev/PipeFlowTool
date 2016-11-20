@@ -1,15 +1,16 @@
 package utility;
 
-import file.ImageManager;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import object.NetworkManager;
 import object.Pump;
 
 import java.awt.*;
+import java.util.Optional;
 
 public class CanvasPanel {
 
@@ -63,21 +64,26 @@ public class CanvasPanel {
                     if (isClick) {
                         networkManager.add(new Pump((int) t.getX(), (int) t.getY()));
                         redraw();
+                        if (t.getButton() == MouseButton.SECONDARY) {
+                            askForInput();
+                            // TODO: set the object properties
+                        }
                     }
                 });
     }
 
-    /*public String askForInput() {
-        return (String)JOptionPane.showInputDialog(
-                this,
-                "Specify flow and capacity:\n"
-                        + "examples: \"8/10\" or \"10\" (short for 10/10)",
-                "Properties", // window title
-                JOptionPane.QUESTION_MESSAGE,
-                UIManager.getIcon("FileChooser.detailsViewIcon"),
-                null,
-                "10"); // default text
-    }*/
+    /** A text input dialog box appears. The resulting string is null if
+     * the user clicks Cancel. The string can be empty. */
+    public void askForInput() {
+        TextInputDialog dialog = new TextInputDialog("10");
+        dialog.setTitle("Properties");
+        dialog.setHeaderText("Specify flow and capacity:\n"
+                + "examples: \"8/10\" or \"10\" (short for 10/10)");
+        dialog.setContentText("flow/capacity:");
+
+        Optional<String> result = dialog.showAndWait();
+        System.out.println(result.orElse("10"));
+    }
 
     public NetworkManager getNetworkManager() {
         return networkManager;

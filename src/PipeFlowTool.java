@@ -19,9 +19,13 @@ public class PipeFlowTool extends Application {
     private HBox buttonBar;
     private CanvasPanel canvasPanel;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        ImageManager.initImages();
+        ImageManager.initializeImages();
 
         root = new VBox();
         root.setMinWidth(640);
@@ -101,16 +105,11 @@ public class PipeFlowTool extends Application {
         }
     }
 
-    private static void configureFileChooser(
-            final FileChooser fileChooser) {
+    private static void configureFileChooser(final FileChooser fileChooser) {
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("JPG", "*.jpg") // TODO: fix extension
         );
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

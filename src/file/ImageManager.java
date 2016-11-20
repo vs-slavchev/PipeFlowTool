@@ -1,18 +1,12 @@
 package file;
 
+import javafx.scene.image.Image;
 import utility.PipeToolFatalError;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ImageManager {
 
-    private final static String directory = "images/";
     private final static String extension = ".png";
     private static Map<String, Image> images = new HashMap<>();
 
@@ -20,15 +14,15 @@ public class ImageManager {
         loadImage("pump");
     }
 
-    private static Image loadImage(String fileName) {
-        BufferedImage img = null;
-        String imagePath = directory + fileName + extension;
+    private static Image loadImage(String imageName) {
+        Image img = null;
+        String fileName = imageName + extension;
         try {
-            img = ImageIO.read(new File(imagePath));
-        } catch (IOException e) {
-            PipeToolFatalError.show(imagePath + " missing!");
+            img = new Image("file:images/" + fileName);
+        } catch (Exception e) {
+            PipeToolFatalError.show(fileName + " missing!");
         }
-        images.put(fileName, img);
+        images.put(imageName, img);
         return img;
     }
 

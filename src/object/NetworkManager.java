@@ -1,6 +1,7 @@
 package object;
 
-import java.awt.*;
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 
 /** Manages all the objects in the network. */
@@ -12,7 +13,7 @@ public class NetworkManager {
         objects.add(object);
     }
 
-    public void drawAllObjects(Graphics g) {
+    public void drawAllObjects(GraphicsContext g) {
         objects.forEach(obj -> obj.draw(g));
     }
 

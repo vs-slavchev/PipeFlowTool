@@ -2,10 +2,13 @@ package file;
 
 import javafx.scene.image.Image;
 import utility.PipeToolFatalError;
+
 import java.util.HashMap;
 import java.util.Map;
 
-/** A static class responsible for loading and retrieving images. */
+/**
+ * A static class responsible for loading, storing and retrieving images.
+ */
 public class ImageManager {
 
     private final static String extension = ".png";
@@ -27,6 +30,12 @@ public class ImageManager {
         return img;
     }
 
+    /**
+     * Get an already loaded image by its name.
+     *
+     * @param s the name of the image without extension
+     * @return the image
+     */
     public static Image getImage(String s) {
         if (!images.containsKey(s)) {
             PipeToolFatalError.show("Image was not loaded. name=\"" + s + "\"");

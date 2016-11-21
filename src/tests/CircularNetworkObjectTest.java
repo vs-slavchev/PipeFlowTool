@@ -21,16 +21,16 @@ public class CircularNetworkObjectTest {
 
     @Test
     public void clickingOnEdgeShouldNotRegisterCollision() {
-        assertFalse(object.isClicked(new Point(119, 199)));
+        assertFalse(object.isClicked(119, 199));
     }
 
     @Test
     public void clickingInsideOnNegativeSideShouldRegisterCollision() {
-        assertTrue(object.isClicked(new Point(86, 86)));
+        assertTrue(object.isClicked(86, 86));
     }
 
     @Test
     public void clickingOnHorizontalLimitShouldRegisterCollision() {
-        assertTrue(object.isClicked(new Point(120, 100)));
+        assertTrue(object.isClicked(120, 100));
     }
 }

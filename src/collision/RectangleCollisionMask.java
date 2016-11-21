@@ -1,7 +1,5 @@
 package collision;
 
-import java.awt.Point;
-
 public class RectangleCollisionMask extends CollisionMask {
 
     private int width, height;
@@ -12,10 +10,10 @@ public class RectangleCollisionMask extends CollisionMask {
     }
 
     @Override
-    public boolean hasCollision(Point point) {
-        return point.getX() > this.getX() - width/2
-                && point.getX() < this.getX() + width/2
-                && point.getY() > this.getY() - height/2
-                && point.getY() < this.getY() + height/2;
+    public boolean hasCollision(final int x, final int y) {
+        return x > this.getX() - width / 2
+                && x < this.getX() + width / 2
+                && y > this.getY() - height / 2
+                && y < this.getY() + height / 2;
     }
 }

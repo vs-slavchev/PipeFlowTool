@@ -4,11 +4,13 @@ import collision.CollisionMask;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.awt.*;
-
-
-/** The base of an object of the network. */
+/**
+ * The base of an object of the network.
+ */
 public abstract class NetworkObject {
+
+    protected int flow;
+    protected int capacity;
 
     protected CollisionMask collisionMask;
     protected Image image;
@@ -18,11 +20,21 @@ public abstract class NetworkObject {
         this.collisionMask.setCenterPoint(x, y);
     }
 
-    public boolean isClicked(final Point point) {
-        return collisionMask.hasCollision(point);
+    public void setFlow(int flow) {
+        this.flow = flow;
     }
 
-    /** Draw the image of the object in the center of its coordinates. */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean isClicked(final int x, final int y) {
+        return collisionMask.hasCollision(x, y);
+    }
+
+    /**
+     * Draw the image of the object in the center of its coordinates.
+     */
     public void draw(GraphicsContext gc) {
         int halfWidth = (int) image.getWidth() / 2;
         int halfHeight = (int) image.getHeight() / 2;

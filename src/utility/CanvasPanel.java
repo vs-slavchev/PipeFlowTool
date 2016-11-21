@@ -40,7 +40,7 @@ public class CanvasPanel {
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //draw stuff
-        graphicsContext.setFill(Color.GREEN);
+        graphicsContext.setFill(Color.LIGHTGRAY);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         graphicsContext.setFill(Color.PURPLE);
         graphicsContext.fillText("ello bois", 100, 200);
@@ -49,11 +49,11 @@ public class CanvasPanel {
     }
 
     private void addEventHandlers() {
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, t -> mouseDragged(t));
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::mouseDragged);
 
-        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, t -> mousePressed(t));
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::mousePressed);
 
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, t -> mouseReleased(t));
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
     }
 
     private void mousePressed(MouseEvent t) {
@@ -66,9 +66,9 @@ public class CanvasPanel {
         int verticalOffset = (int) (t.getY() - dragOrigin.getY());
         networkManager.translateAll(horizontalOffset, verticalOffset);
         dragOrigin.setLocation(t.getX(), t.getY());
+        isClick = false;
 
         redraw();
-        isClick = false;
     }
 
     private void mouseReleased(MouseEvent t) {
@@ -79,50 +79,60 @@ public class CanvasPanel {
             // try to select an object, if there is none - create one
             Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
             NetworkObject currentObject = selected.orElse(new Pump(cursorX, cursorY));
+
             networkManager.add(currentObject);
 
             Optional<String> properties = showPropertiesInputDialog();
-            try {
-                currentObject.setFlow(readFlowValue(properties.orElse("10")));
-                currentObject.setCapacity(readCapacityValue(properties.orElse("10")));
-            } catch (NumberFormatException nfe) {
-                showNumberFormatAlert();
-            }
+            setObjectFlowAndCapacity(currentObject, properties.orElse("10"));
         }
         redraw();
     }
 
-    private int readFlowValue(String string) throws NumberFormatException {
-        if (!string.contains("/")) {
-            return Integer.parseInt(string);
+    /**
+     * Set valid values for the flow and capacity of a network object from an input string.
+     * @param object
+     * @param input
+     */
+    public void setObjectFlowAndCapacity(NetworkObject object, String input) {
+        int flow = Values.DEFAULT_FLOW_INPUT;
+        int capacity = Values.DEFAULT_FLOW_INPUT;
+        try {
+            flow = extractTextInputData(input, 0);
+            capacity = extractTextInputData(input, 1);
+        } catch (NumberFormatException | IndexOutOfBoundsException ex) {
+            showInvalidInputAlert("The values were not numbers.\n" +
+                    "Default values are assigned.");
+        } finally {
+            object.setFlow(flow);
+            object.setCapacity(capacity);
         }
-        // TODO
-        String[] numbers = string.split("/");
-        if (numbers.length == 2) {
-
-        }
-
-        // string.chars().filter(Character::isDigit).forEach(println);
-        return 0;
     }
 
-    private int readCapacityValue(String string) throws NumberFormatException {
+    /**
+     * Get the integer values out of the input string.
+     *
+     * @param string   the input string
+     * @param position index in the values array: 0th is left of '/'; 1st is to the right
+     * @return the flow or capacity value as an int
+     */
+    private int extractTextInputData(String string, int position)
+            throws NumberFormatException, IndexOutOfBoundsException {
         if (!string.contains("/")) {
             return Integer.parseInt(string);
+        } else {
+            String[] numbers = string.split("/");
+            return Integer.parseInt(numbers[position]);
         }
-        // TODO
-        return 0;
     }
 
     /**
      * Shows an alert box saying that the expected numbers were not input properly.
      */
-    private void showNumberFormatAlert() {
+    private void showInvalidInputAlert(String errorDescription) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
         alert.setHeaderText("Invalid input");
-        alert.setContentText("The values were not numbers.\n" +
-                "Default values are assigned.");
+        alert.setContentText(errorDescription);
 
         alert.showAndWait();
     }

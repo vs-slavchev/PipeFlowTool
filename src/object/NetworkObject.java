@@ -20,12 +20,12 @@ public abstract class NetworkObject {
         this.collisionMask.setCenterPoint(x, y);
     }
 
-    public void setFlow(int flow) {
-        this.flow = flow;
+    public void setFlow(final int flow) {
+        this.flow = Math.max(flow, 0);
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(final int capacity) {
+        this.capacity = Math.max(capacity, 0);
     }
 
     public boolean isClicked(final int x, final int y) {

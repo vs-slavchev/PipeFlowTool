@@ -33,13 +33,14 @@ public class ImageManager {
     /**
      * Get an already loaded image by its name.
      *
-     * @param s the name of the image without extension
+     * @param imageName the name of the image without extension
      * @return the image
      */
-    public static Image getImage(String s) {
-        if (!images.containsKey(s)) {
-            PipeToolFatalError.show("Image was not loaded. name=\"" + s + "\"");
+    public static Image getImage(String imageName) {
+        if (!images.containsKey(imageName)) {
+            PipeToolFatalError.show("Image was not loaded.\n" +
+                    "name=\"" + imageName + "\"");
         }
-        return images.get(s);
+        return images.get(imageName);
     }
 }

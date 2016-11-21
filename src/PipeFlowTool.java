@@ -62,7 +62,7 @@ public class PipeFlowTool extends Application {
         MenuItem saveAsItem = new MenuItem("Save As...");
         fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
 
-        newItem.setOnAction(e -> {/*TODO: clear everything*/});
+        newItem.setOnAction(e -> {/*TODO: clear everything and warn if not saved*/});
         openItem.setOnAction(e -> openFile(primaryStage));
         saveItem.setOnAction(e -> {/*TODO: overwrite with saveAs method by knowing the filename*/});
         saveAsItem.setOnAction(e -> saveFileAs(primaryStage));

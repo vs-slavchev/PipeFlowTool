@@ -1,12 +1,16 @@
 package utility;
 
-import javax.swing.*;
+import javafx.scene.control.Alert;
 
 public class PipeToolFatalError {
     public static void show(String errorMessage) {
-        JOptionPane.showMessageDialog(null,
-                "Error: \n" + errorMessage,
-                "Error", JOptionPane.ERROR_MESSAGE);
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Fatal Error:");
+        alert.setContentText(errorMessage);
+
+        alert.showAndWait();
         System.exit(0);
     }
 }

@@ -1,5 +1,6 @@
 package utility;
 
+import collision.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -10,7 +11,6 @@ import object.NetworkManager;
 import object.NetworkObject;
 import object.Pump;
 
-import java.awt.*;
 import java.util.Optional;
 
 /**
@@ -59,6 +59,9 @@ public class CanvasPanel {
     private void mousePressed(MouseEvent t) {
         dragOrigin = new Point((int) t.getX(), (int) t.getY());
         isClick = true;
+        /* TODO: right clicked on obj - select it; (can swap out right - properties, left - select)
+         * drag moves selected ones only;
+         * what is selecting used for? can we select multiple objs? what for? */
     }
 
     private void mouseDragged(MouseEvent t) {
@@ -95,7 +98,7 @@ public class CanvasPanel {
      */
     public void setObjectFlowAndCapacity(NetworkObject object, String input) {
         int flow = Values.DEFAULT_FLOW_INPUT;
-        int capacity = Values.DEFAULT_FLOW_INPUT;
+        int capacity = flow;
         try {
             flow = extractTextInputData(input, 0);
             capacity = extractTextInputData(input, 1);
@@ -117,11 +120,11 @@ public class CanvasPanel {
      */
     private int extractTextInputData(String string, int position)
             throws NumberFormatException, IndexOutOfBoundsException {
-        if (!string.contains("/")) {
-            return Integer.parseInt(string);
-        } else {
+        if (string.contains("/")) {
             String[] numbers = string.split("/");
             return Integer.parseInt(numbers[position]);
+        } else {
+            return Integer.parseInt(string);
         }
     }
 

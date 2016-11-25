@@ -71,8 +71,13 @@ public class PipeFlowTool extends Application {
         pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump")));
 
         Button sinkButton = new Button("sink");
+        Button splitterButton = new Button("splitter");
+        Button adjustableSplitterButton = new Button("adjustable splitter");
+        Button mergerButton = new Button("merger");
 
-        buttonBar.getChildren().addAll(fileMenuButton, pumpButton, sinkButton);
+        buttonBar.getChildren().addAll(
+                fileMenuButton, pumpButton, sinkButton,
+                splitterButton, adjustableSplitterButton, mergerButton);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
     }

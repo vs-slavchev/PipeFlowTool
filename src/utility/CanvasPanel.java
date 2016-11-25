@@ -1,6 +1,5 @@
 package utility;
 
-import collision.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -50,9 +49,7 @@ public class CanvasPanel {
 
     private void addEventHandlers() {
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::mouseDragged);
-
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::mousePressed);
-
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
     }
 
@@ -62,12 +59,16 @@ public class CanvasPanel {
         /* TODO: right clicked on obj - select it; (can swap out right - properties, left - select)
          * drag moves selected ones only;
          * what is selecting used for? can we select multiple objs? what for? */
+
+        redraw();
     }
 
     private void mouseDragged(MouseEvent t) {
-        int horizontalOffset = (int) (t.getX() - dragOrigin.getX());
-        int verticalOffset = (int) (t.getY() - dragOrigin.getY());
-        networkManager.translateAll(horizontalOffset, verticalOffset);
+        int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
+        int verticalDelta = (int) (t.getY() - dragOrigin.getY());
+
+        networkManager.translateAll(horizontalDelta, verticalDelta);
+
         dragOrigin.setLocation(t.getX(), t.getY());
         isClick = false;
 
@@ -82,6 +83,10 @@ public class CanvasPanel {
             // try to select an object, if there is none - create one
             Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
             NetworkObject currentObject = selected.orElse(new Pump(cursorX, cursorY));
+            if (networkManager.doesOverlap(currentObject)) {
+                // TODO: inform user the spot is not good
+                return;
+            }
 
             networkManager.add(currentObject);
 

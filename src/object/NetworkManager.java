@@ -36,4 +36,8 @@ public class NetworkManager {
     public Optional<NetworkObject> getObject(int x, int y) {
         return objects.stream().filter(obj -> obj.isClicked(x, y)).findFirst();
     }
+
+    public boolean doesOverlap(NetworkObject currentObject) {
+        return objects.stream().anyMatch(obj -> obj.collidesWith(currentObject));
+    }
 }

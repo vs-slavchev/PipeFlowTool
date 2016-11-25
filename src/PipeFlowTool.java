@@ -50,13 +50,13 @@ public class PipeFlowTool extends Application {
         buttonBar = new HBox();
 
         MenuButton fileMenuButton = new MenuButton("File");
-        fileMenuButton.setMinHeight(42.0); // image on buttons height + 10
+        fileMenuButton.setMinHeight(42.0); // TODO: image on buttons = height + 10
         fileMenuButton.setPrefHeight(42.0);
         fileMenuButton.setMaxHeight(42.0);
 
         //add items to file menu button
-        MenuItem newItem = new MenuItem("New");
-        MenuItem openItem = new MenuItem("Open");
+        MenuItem newItem = new MenuItem("New simulation");
+        MenuItem openItem = new MenuItem("Open simulation");
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem saveItem = new MenuItem("Save");
         MenuItem saveAsItem = new MenuItem("Save As...");
@@ -68,16 +68,19 @@ public class PipeFlowTool extends Application {
         saveAsItem.setOnAction(e -> saveFileAs(primaryStage));
 
         Button pumpButton = new Button();
-        pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump")));
+        pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump32")));
 
-        Button sinkButton = new Button("sink");
-        Button splitterButton = new Button("splitter");
-        Button adjustableSplitterButton = new Button("adjustable splitter");
-        Button mergerButton = new Button("merger");
+        Button splitterButton = new Button();
+        splitterButton.setGraphic(new ImageView(ImageManager.getImage("splitter32")));
 
-        buttonBar.getChildren().addAll(
-                fileMenuButton, pumpButton, sinkButton,
-                splitterButton, adjustableSplitterButton, mergerButton);
+        Button mergerButton = new Button();
+        mergerButton.setGraphic(new ImageView(ImageManager.getImage("merger32")));
+
+        Button sinkButton = new Button();
+        sinkButton.setGraphic(new ImageView(ImageManager.getImage("sink32")));
+
+        buttonBar.getChildren().addAll(fileMenuButton, pumpButton,
+                splitterButton, mergerButton, sinkButton);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
     }

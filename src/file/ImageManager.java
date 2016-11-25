@@ -3,6 +3,7 @@ package file;
 import javafx.scene.image.Image;
 import utility.PipeToolFatalError;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,17 @@ public class ImageManager {
     private static Map<String, Image> images = new HashMap<>();
 
     public static void initializeImages() {
-        loadImage("pump");
+        String[] imageNames = {
+                "pump32",
+                "pump64",
+                "merger32",
+                "merger64",
+                "splitter32",
+                "splitter64",
+                "sink32",
+                "sink64"
+        };
+        Arrays.stream(imageNames).forEach(ImageManager::loadImage);
     }
 
     private static Image loadImage(String imageName) {

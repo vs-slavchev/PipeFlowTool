@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import object.NetworkManager;
@@ -56,6 +57,9 @@ public class CanvasPanel {
     private void mousePressed(MouseEvent t) {
         dragOrigin = new Point((int) t.getX(), (int) t.getY());
         isClick = true;
+
+
+
         /* TODO: right clicked on obj - select it; (can swap out right - properties, left - select)
          * drag moves selected ones only;
          * what is selecting used for? can we select multiple objs? what for? */
@@ -76,22 +80,34 @@ public class CanvasPanel {
     }
 
     private void mouseReleased(MouseEvent t) {
-        if (isClick) {
-            int cursorX = (int) t.getX();
-            int cursorY = (int) t.getY();
+        int cursorX = (int) t.getX();
+        int cursorY = (int) t.getY();
 
-            // try to select an object, if there is none - create one
-            Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
-            NetworkObject currentObject = selected.orElse(new Pump(cursorX, cursorY));
-            if (networkManager.doesOverlap(currentObject)) {
-                // TODO: inform user the spot is not good
-                return;
+        if (isClick) {
+            if (t.getButton() == MouseButton.PRIMARY) {
+                networkManager.deselectAll();
+
+                // try to select an object, if there is none - create one
+                Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
+                NetworkObject currentObject = selected.orElse(new Pump(cursorX, cursorY));
+
+                if (networkManager.doesOverlap(currentObject)) {
+                    showInvalidInputAlert("This spot overlaps with an existing object.");
+                    return;
+                }
+
+                networkManager.add(currentObject);
+
+                Optional<String> properties = showPropertiesInputDialog();
+                setObjectFlowAndCapacity(currentObject, properties.orElse("10"));
             }
 
-            networkManager.add(currentObject);
-
-            Optional<String> properties = showPropertiesInputDialog();
-            setObjectFlowAndCapacity(currentObject, properties.orElse("10"));
+            if (t.getButton() == MouseButton.SECONDARY) {
+                Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
+                if (selected.isPresent()) {
+                    selected.get().setSelected(true);
+                }
+            }
         }
         redraw();
     }

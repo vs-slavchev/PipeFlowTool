@@ -40,4 +40,8 @@ public class NetworkManager {
     public boolean doesOverlap(NetworkObject currentObject) {
         return objects.stream().anyMatch(obj -> obj.collidesWith(currentObject));
     }
+
+    public void deselectAll() {
+        objects.forEach(obj -> obj.setSelected(false));
+    }
 }

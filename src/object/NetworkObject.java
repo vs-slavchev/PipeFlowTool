@@ -2,6 +2,7 @@ package object;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import utility.Values;
 
@@ -15,6 +16,8 @@ public abstract class NetworkObject {
 
     protected Rectangle collisionBox;
     protected Image image;
+
+    protected boolean selected;
 
     public NetworkObject(int x, int y) {
         int boxX = x - Values.OBJECT_SIZE / 2;
@@ -47,6 +50,12 @@ public abstract class NetworkObject {
      */
     public void draw(GraphicsContext gc) {
         gc.drawImage(image, collisionBox.getX(), collisionBox.getY());
+        if (selected) {
+            gc.setStroke(Color.GREEN);
+            gc.setLineWidth(4);
+            gc.strokeRect(collisionBox.getX(), collisionBox.getY(),
+                    collisionBox.getWidth(), collisionBox.getHeight());
+        }
     }
 
     public void translate(final int x, final int y) {
@@ -56,5 +65,13 @@ public abstract class NetworkObject {
 
     public Rectangle getCollisionBox() {
         return collisionBox;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utility.CanvasPanel;
+import utility.Values;
 
 import java.io.File;
 
@@ -50,9 +51,9 @@ public class PipeFlowTool extends Application {
         buttonBar = new HBox();
 
         MenuButton fileMenuButton = new MenuButton("File");
-        fileMenuButton.setMinHeight(42.0); // TODO: image on buttons = height + 10
-        fileMenuButton.setPrefHeight(42.0);
-        fileMenuButton.setMaxHeight(42.0);
+        fileMenuButton.setMinHeight(Values.FILE_BUTTON_HEIGHT);
+        fileMenuButton.setPrefHeight(Values.FILE_BUTTON_HEIGHT);
+        fileMenuButton.setMaxHeight(Values.FILE_BUTTON_HEIGHT);
 
         //add items to file menu button
         MenuItem newItem = new MenuItem("New simulation");

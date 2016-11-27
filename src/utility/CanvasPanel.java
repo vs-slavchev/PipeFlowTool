@@ -58,21 +58,16 @@ public class CanvasPanel {
         dragOrigin = new Point((int) t.getX(), (int) t.getY());
         isClick = true;
 
-        /* TODO: right clicked on obj - select it; (can swap out right - properties, left - select)
-         * drag moves selected ones only; if none are selected - move all;
-         * refactor mouse released */
-
         redraw();
     }
 
     private void mouseDragged(MouseEvent t) {
         int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
         int verticalDelta = (int) (t.getY() - dragOrigin.getY());
-
-        networkManager.translateAll(horizontalDelta, verticalDelta);
-
         dragOrigin.setLocation(t.getX(), t.getY());
         isClick = false;
+
+        networkManager.moveObjects(horizontalDelta, verticalDelta);
 
         redraw();
     }

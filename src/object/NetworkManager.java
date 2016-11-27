@@ -29,8 +29,14 @@ public class NetworkManager {
     /**
      * Use for moving all objects or making it look like we are moving the viewport.
      */
-    public void translateAll(final int x, final int y) {
-        objects.forEach(obj -> obj.translate(x, y));
+    public void moveObjects(final int x, final int y) {
+        if (objects.stream().anyMatch(NetworkObject::isSelected)) {
+            objects.stream()
+                    .filter(NetworkObject::isSelected)
+                    .forEach(obj -> obj.translate(x, y));
+        } else {
+            objects.forEach(obj -> obj.translate(x, y));
+        }
     }
 
     public Optional<NetworkObject> getObject(int x, int y) {
@@ -46,6 +52,6 @@ public class NetworkManager {
     }
 
     public void deleteSelected() {
-        objects.removeIf(obj -> obj.isSelected());
+        objects.removeIf(NetworkObject::isSelected);
     }
 }

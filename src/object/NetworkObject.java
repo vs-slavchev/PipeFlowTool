@@ -67,6 +67,10 @@ public abstract class NetworkObject {
         return collisionBox;
     }
 
+    public void toggleSelected() {
+        selected = !selected;
+    }
+
     public boolean isSelected() {
         return selected;
     }

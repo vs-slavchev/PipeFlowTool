@@ -1,12 +1,10 @@
 import file.ImageManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -68,6 +66,10 @@ public class PipeFlowTool extends Application {
         saveItem.setOnAction(e -> {/*TODO: overwrite with saveAs method by knowing the filename*/});
         saveAsItem.setOnAction(e -> saveFileAs(primaryStage));
 
+        Button deleteButton = new Button();
+        deleteButton.setGraphic(new ImageView(ImageManager.getImage("delete32")));
+        deleteButton.setOnAction(event -> canvasPanel.deleteSelected());
+
         Button pumpButton = new Button();
         pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump32")));
 
@@ -80,8 +82,9 @@ public class PipeFlowTool extends Application {
         Button sinkButton = new Button();
         sinkButton.setGraphic(new ImageView(ImageManager.getImage("sink32")));
 
-        buttonBar.getChildren().addAll(fileMenuButton, pumpButton,
-                splitterButton, mergerButton, sinkButton);
+        buttonBar.getChildren().addAll(fileMenuButton, new Separator(Orientation.VERTICAL),
+                deleteButton, new Separator(Orientation.VERTICAL),
+                pumpButton, splitterButton, mergerButton, sinkButton);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
     }

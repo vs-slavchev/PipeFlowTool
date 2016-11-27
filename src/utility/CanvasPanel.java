@@ -58,11 +58,9 @@ public class CanvasPanel {
         dragOrigin = new Point((int) t.getX(), (int) t.getY());
         isClick = true;
 
-
-
         /* TODO: right clicked on obj - select it; (can swap out right - properties, left - select)
-         * drag moves selected ones only;
-         * what is selecting used for? can we select multiple objs? what for? */
+         * drag moves selected ones only; if none are selected - move all;
+         * refactor mouse released */
 
         redraw();
     }
@@ -105,7 +103,7 @@ public class CanvasPanel {
             if (t.getButton() == MouseButton.SECONDARY) {
                 Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
                 if (selected.isPresent()) {
-                    selected.get().setSelected(true);
+                    selected.get().toggleSelected();
                 }
             }
         }
@@ -174,5 +172,10 @@ public class CanvasPanel {
 
         Optional<String> result = dialog.showAndWait();
         return result;
+    }
+
+    public void deleteSelected() {
+        networkManager.deleteSelected();
+        redraw();
     }
 }

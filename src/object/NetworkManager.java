@@ -44,4 +44,8 @@ public class NetworkManager {
     public void deselectAll() {
         objects.forEach(obj -> obj.setSelected(false));
     }
+
+    public void deleteSelected() {
+        objects.removeIf(obj -> obj.isSelected());
+    }
 }

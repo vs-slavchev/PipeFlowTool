@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import object.NetworkManager;
 import object.NetworkObject;
-import object.Pump;
+import object.NetworkObjectFactory;
 
 import java.util.Optional;
 
@@ -62,12 +62,14 @@ public class CanvasPanel {
     }
 
     private void mouseDragged(MouseEvent t) {
-        int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
-        int verticalDelta = (int) (t.getY() - dragOrigin.getY());
-        dragOrigin.setLocation(t.getX(), t.getY());
-        isClick = false;
+        if (t.getButton() == MouseButton.PRIMARY) {
+            int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
+            int verticalDelta = (int) (t.getY() - dragOrigin.getY());
+            dragOrigin.setLocation(t.getX(), t.getY());
+            isClick = false;
 
-        networkManager.moveObjects(horizontalDelta, verticalDelta);
+            networkManager.moveObjects(horizontalDelta, verticalDelta);
+        }
 
         redraw();
     }
@@ -82,7 +84,8 @@ public class CanvasPanel {
 
                 // try to select an object, if there is none - create one
                 Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
-                NetworkObject currentObject = selected.orElse(new Pump(cursorX, cursorY));
+                NetworkObject currentObject = selected.orElse(
+                        NetworkObjectFactory.createNetworkObject(cursorX, cursorY));
 
                 if (networkManager.doesOverlap(currentObject)) {
                     showInvalidInputAlert("This spot overlaps with an existing object.");

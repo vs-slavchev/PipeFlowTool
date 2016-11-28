@@ -1,5 +1,6 @@
 package object;
 
+import file.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -19,10 +20,11 @@ public abstract class NetworkObject {
 
     protected boolean selected;
 
-    public NetworkObject(int x, int y) {
+    public NetworkObject(int x, int y, String imageName) {
         int boxX = x - Values.OBJECT_SIZE / 2;
         int boxY = y - Values.OBJECT_SIZE / 2;
         this.collisionBox = new Rectangle(boxX, boxY, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
+        image = ImageManager.getImage(imageName);
     }
 
     public void setFlow(final int flow) {

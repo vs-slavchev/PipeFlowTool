@@ -25,7 +25,8 @@ public class ImageManager {
                 "splitter64",
                 "sink32",
                 "sink64",
-                "delete32"
+                "delete32",
+                "pointer32"
         };
         Arrays.stream(imageNames).forEach(ImageManager::loadImage);
     }

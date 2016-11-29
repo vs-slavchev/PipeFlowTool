@@ -72,6 +72,10 @@ public class PipeFlowTool extends Application {
         deleteButton.setGraphic(new ImageView(ImageManager.getImage("delete32")));
         deleteButton.setOnAction(event -> canvasPanel.deleteSelected());
 
+        Button pointerButton = new Button();
+        pointerButton.setGraphic(new ImageView(ImageManager.getImage("pointer32")));
+        //pointerButton.setOnAction(/* TODO: */);
+
         Button pumpButton = new Button();
         pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump32")));
         pumpButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.PUMP));
@@ -88,8 +92,9 @@ public class PipeFlowTool extends Application {
         sinkButton.setGraphic(new ImageView(ImageManager.getImage("sink32")));
         sinkButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.SINK));
 
-        buttonBar.getChildren().addAll(fileMenuButton, new Separator(Orientation.VERTICAL),
-                deleteButton, new Separator(Orientation.VERTICAL),
+        buttonBar.getChildren().addAll(
+                fileMenuButton, new Separator(Orientation.VERTICAL),
+                pointerButton, deleteButton, new Separator(Orientation.VERTICAL),
                 pumpButton, splitterButton, mergerButton, sinkButton);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));

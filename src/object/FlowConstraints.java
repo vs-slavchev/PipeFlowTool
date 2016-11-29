@@ -6,9 +6,6 @@ import utility.Values;
 
 import java.util.Optional;
 
-/* TODO: add draw method; call it in overridden draw for constrainable obj;
- * have it show status? */
-
 /**
  * A component to be used in objects which have flow and capacity.
  * Also responsible for showing input dialog and validating input.
@@ -17,6 +14,10 @@ public class FlowConstraints {
 
     private int flow;
     private int capacity;
+
+    public FlowConstraints() {
+        flow = capacity = Values.DEFAULT_FLOW_INPUT;
+    }
 
     /**
      * A text input dialog box appears. The resulting string is null if

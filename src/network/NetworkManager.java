@@ -19,12 +19,12 @@ public class NetworkManager {
         }
     }
 
-    public void remove(NetworkObject object) {
-        objects.remove(object);
+    public void drawPipes(GraphicsContext gc) {
+
     }
 
-    public void drawAllObjects(GraphicsContext g) {
-        objects.forEach(obj -> obj.draw(g));
+    public void drawAllObjects(GraphicsContext gc) {
+        objects.forEach(obj -> obj.draw(gc));
     }
 
     /**

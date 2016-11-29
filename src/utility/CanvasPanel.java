@@ -42,7 +42,7 @@ public class CanvasPanel {
         // prepare background
         graphicsContext.setFill(Color.LIGHTGRAY);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
+        networkManager.drawPipes(graphicsContext);
         networkManager.drawAllObjects(graphicsContext);
     }
 
@@ -77,22 +77,23 @@ public class CanvasPanel {
         int cursorY = (int) t.getY();
 
         if (isClick) {
-            if (t.getButton() == MouseButton.PRIMARY) {
+            if (t.getButton() == MouseButton.PRIMARY) { //TODO: check cursor type
                 networkManager.deselectAll();
 
-                // try to select an object, if there is none - create one
+                // try to select an object, if found - show properties
                 Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
-                NetworkObject currentObject = selected.orElse(
-                        NetworkFactory.createNetworkObject(cursorX, cursorY));
+                if (selected.isPresent()) {
+                    selected.get().showPropertiesDialog();
+                } else {
+                    NetworkObject created = NetworkFactory.createNetworkObject(cursorX, cursorY);
 
-                if (networkManager.doesOverlap(currentObject)) {
-                    AlertDialog.showInvalidInputAlert(
-                            "This spot overlaps with an existing object.");
-                    return;
+                    if (networkManager.doesOverlap(created)) {
+                        AlertDialog.showInvalidInputAlert(
+                                "This spot overlaps with an existing object.");
+                        return;
+                    }
+                    networkManager.add(created);
                 }
-
-                networkManager.add(currentObject);
-                currentObject.showPropertiesDialog();
             }
 
             if (t.getButton() == MouseButton.SECONDARY) {

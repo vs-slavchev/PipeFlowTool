@@ -5,5 +5,6 @@ public class Values {
 
     // graphics related
     public static final int OBJECT_SIZE = 64;
+    public static final int INFO_VERTICAL_OFFSET = OBJECT_SIZE + 10;
     public static final int FILE_BUTTON_HEIGHT = 42;
 }

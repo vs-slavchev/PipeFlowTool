@@ -84,4 +84,9 @@ public class FlowConstraints {
             return Integer.parseInt(string);
         }
     }
+
+    @Override
+    public String toString() {
+        return flow + "/" + capacity;
+    }
 }

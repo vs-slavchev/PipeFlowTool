@@ -1,10 +1,12 @@
 package utility;
 
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import network.NetworkManager;
 import object.NetworkObject;
 import network.NetworkFactory;
@@ -26,6 +28,8 @@ public class CanvasPanel {
     public CanvasPanel(Canvas canvas) {
         this.canvas = canvas;
         graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setTextBaseline(VPos.CENTER);
         addEventHandlers();
 
         networkManager = new NetworkManager();
@@ -35,13 +39,9 @@ public class CanvasPanel {
      * Call after each event to render the now current state.
      */
     public void redraw() {
-        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        //draw stuff
+        // prepare background
         graphicsContext.setFill(Color.LIGHTGRAY);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        graphicsContext.setFill(Color.PURPLE);
-        graphicsContext.fillText("ello bois", 100, 200);
 
         networkManager.drawAllObjects(graphicsContext);
     }

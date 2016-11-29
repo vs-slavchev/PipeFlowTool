@@ -1,10 +1,9 @@
 package object;
 
-import file.ImageManager;
-
-public class Pump extends NetworkObject {
+public class Pump extends ConstrainedNetworkObject {
 
     public Pump(int x, int y) {
         super(x, y, "pump64");
     }
+
 }

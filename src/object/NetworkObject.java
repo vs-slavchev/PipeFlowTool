@@ -12,9 +12,6 @@ import utility.Values;
  */
 public abstract class NetworkObject {
 
-    protected int flow;
-    protected int capacity;
-
     protected Rectangle collisionBox;
     protected Image image;
 
@@ -25,14 +22,6 @@ public abstract class NetworkObject {
         int boxY = y - Values.OBJECT_SIZE / 2;
         this.collisionBox = new Rectangle(boxX, boxY, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
         image = ImageManager.getImage(imageName);
-    }
-
-    public void setFlow(final int flow) {
-        this.flow = Math.max(flow, 0);
-    }
-
-    public void setCapacity(final int capacity) {
-        this.capacity = Math.max(capacity, 0);
     }
 
     public boolean isClicked(final int x, final int y) {
@@ -52,6 +41,10 @@ public abstract class NetworkObject {
      */
     public void draw(GraphicsContext gc) {
         gc.drawImage(image, collisionBox.getX(), collisionBox.getY());
+        drawHighlighting(gc);
+    }
+
+    private void drawHighlighting(GraphicsContext gc) {
         if (selected) {
             gc.setStroke(Color.GREEN);
             gc.setLineWidth(4);
@@ -63,6 +56,10 @@ public abstract class NetworkObject {
     public void translate(final int x, final int y) {
         collisionBox.setX(collisionBox.getX() + x);
         collisionBox.setY(collisionBox.getY() + y);
+    }
+
+    public void showPropertiesDialog() {
+        // intentionally empty
     }
 
     public Rectangle getCollisionBox() {

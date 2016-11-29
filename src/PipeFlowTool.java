@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import object.NetworkObjectFactory;
-import object.NetworkObjectFactory.NetworkObjectType;
+import network.NetworkFactory;
+import network.NetworkFactory.NetworkObjectType;
 import utility.CanvasPanel;
 import utility.Values;
 
@@ -74,21 +74,19 @@ public class PipeFlowTool extends Application {
 
         Button pumpButton = new Button();
         pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump32")));
-        pumpButton.setOnAction(event -> NetworkObjectFactory.setSelected(NetworkObjectType.PUMP));
+        pumpButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.PUMP));
 
         Button splitterButton = new Button();
         splitterButton.setGraphic(new ImageView(ImageManager.getImage("splitter32")));
-        splitterButton.setOnAction(event ->
-                NetworkObjectFactory.setSelected(NetworkObjectType.SPLITTER));
+        splitterButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.SPLITTER));
 
         Button mergerButton = new Button();
         mergerButton.setGraphic(new ImageView(ImageManager.getImage("merger32")));
-        mergerButton.setOnAction(event ->
-                NetworkObjectFactory.setSelected(NetworkObjectType.MERGER));
+        mergerButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.MERGER));
 
         Button sinkButton = new Button();
         sinkButton.setGraphic(new ImageView(ImageManager.getImage("sink32")));
-        sinkButton.setOnAction(event -> NetworkObjectFactory.setSelected(NetworkObjectType.SINK));
+        sinkButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.SINK));
 
         buttonBar.getChildren().addAll(fileMenuButton, new Separator(Orientation.VERTICAL),
                 deleteButton, new Separator(Orientation.VERTICAL),
@@ -123,7 +121,7 @@ public class PipeFlowTool extends Application {
             /*try {
                 // TODO: write and save to file
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+
             }*/
         }
     }

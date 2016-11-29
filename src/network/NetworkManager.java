@@ -1,6 +1,7 @@
-package object;
+package network;
 
 import javafx.scene.canvas.GraphicsContext;
+import object.NetworkObject;
 
 import java.util.ArrayList;
 import java.util.Optional;

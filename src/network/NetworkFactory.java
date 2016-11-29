@@ -1,6 +1,10 @@
-package object;
+package network;
 
-public class NetworkObjectFactory {
+// TODO: add pipe creation and setting up;
+
+import object.*;
+
+public class NetworkFactory {
 
     public enum NetworkObjectType {PUMP, SPLITTER, MERGER, SINK}
 

@@ -1,7 +1,7 @@
 package file;
 
 import javafx.scene.image.Image;
-import utility.PipeToolFatalError;
+import utility.AlertDialog;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class ImageManager {
         try {
             img = new Image("file:images/" + fileName);
         } catch (Exception e) {
-            PipeToolFatalError.show(fileName + " missing!");
+            AlertDialog.showFatalError(fileName + " missing!");
         }
         images.put(imageName, img);
         return img;
@@ -50,7 +50,7 @@ public class ImageManager {
      */
     public static Image getImage(String imageName) {
         if (!images.containsKey(imageName)) {
-            PipeToolFatalError.show("Image was not loaded.\n" +
+            AlertDialog.showFatalError("Image was not loaded.\n" +
                     "name=\"" + imageName + "\"");
         }
         return images.get(imageName);

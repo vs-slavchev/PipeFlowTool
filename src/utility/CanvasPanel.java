@@ -10,6 +10,7 @@ import javafx.scene.text.TextAlignment;
 import network.NetworkManager;
 import object.NetworkObject;
 import network.NetworkFactory;
+import utility.CursorManager.CursorType;
 
 import java.util.Optional;
 
@@ -68,7 +69,6 @@ public class CanvasPanel {
 
             networkManager.moveObjects(horizontalDelta, verticalDelta);
         }
-
         redraw();
     }
 
@@ -77,7 +77,8 @@ public class CanvasPanel {
         int cursorY = (int) t.getY();
 
         if (isClick) {
-            if (t.getButton() == MouseButton.PRIMARY) { //TODO: check cursor type
+            if (t.getButton() == MouseButton.PRIMARY) { /* TODO: check cursor type; add deleting
+                                                    with CursorManager.getCursorType() */
                 networkManager.deselectAll();
 
                 // try to select an object, if found - show properties
@@ -92,6 +93,7 @@ public class CanvasPanel {
                                 "This spot overlaps with an existing object.");
                         return;
                     }
+                    CursorManager.setCursorType(CursorType.POINTER);
                     networkManager.add(created);
                 }
             }
@@ -106,8 +108,9 @@ public class CanvasPanel {
         redraw();
     }
 
-    public void deleteSelected() {
-        networkManager.deleteSelected();
+    public boolean deleteSelectedObjects() {
+        boolean anyDeleted = networkManager.deleteSelected();
         redraw();
+        return anyDeleted;
     }
 }

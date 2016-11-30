@@ -3,12 +3,11 @@ package network;
 // TODO: add pipe creation and setting up;
 
 import object.*;
+import utility.CursorManager.CursorType;
 
 public class NetworkFactory {
 
-    public enum NetworkObjectType {PUMP, SPLITTER, MERGER, SINK}
-
-    private static NetworkObjectType selected = NetworkObjectType.PUMP;
+    private static CursorType selected;
 
     public static NetworkObject createNetworkObject(int x, int y) {
         switch (selected) {
@@ -23,7 +22,7 @@ public class NetworkFactory {
         }
     }
 
-    public static void setSelected(NetworkObjectType type) {
+    public static void setSelected(CursorType type) {
         selected = type;
     }
 }

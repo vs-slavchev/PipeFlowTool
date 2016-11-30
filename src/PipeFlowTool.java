@@ -11,15 +11,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import network.NetworkFactory;
-import network.NetworkFactory.NetworkObjectType;
 import utility.CanvasPanel;
+import utility.CursorManager;
+import utility.CursorManager.CursorType;
 import utility.Values;
 
 import java.io.File;
 
 public class PipeFlowTool extends Application {
 
-    private VBox root;
     private HBox buttonBar;
     private CanvasPanel canvasPanel;
 
@@ -31,20 +31,20 @@ public class PipeFlowTool extends Application {
     public void start(Stage primaryStage) {
         ImageManager.initializeImages();
 
-        root = new VBox();
+        VBox root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
 
         setUpButtonBar(primaryStage);
-        Canvas canvas = new Canvas();
-        setUpCanvas(canvas);
-        root.getChildren().addAll(buttonBar, canvas);
+        root.getChildren().addAll(buttonBar, setUpCanvas(root));
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Pipe Flow Tool");
         primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        CursorManager.setScene(scene);
     }
 
     private void setUpButtonBar(Stage primaryStage) {
@@ -63,35 +63,31 @@ public class PipeFlowTool extends Application {
         MenuItem saveAsItem = new MenuItem("Save As...");
         fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
 
+        // assign action handlers to the items in the file menu
         newItem.setOnAction(e -> {/*TODO: clear everything and warn if not saved*/});
         openItem.setOnAction(e -> openFile(primaryStage));
         saveItem.setOnAction(e -> {/*TODO: overwrite with saveAs method by knowing the filename*/});
         saveAsItem.setOnAction(e -> saveFileAs(primaryStage));
 
-        Button deleteButton = new Button();
-        deleteButton.setGraphic(new ImageView(ImageManager.getImage("delete32")));
-        deleteButton.setOnAction(event -> canvasPanel.deleteSelected());
+        setUpButtons(fileMenuButton);
+    }
 
+    private void setUpButtons(MenuButton fileMenuButton) {
         Button pointerButton = new Button();
         pointerButton.setGraphic(new ImageView(ImageManager.getImage("pointer32")));
-        //pointerButton.setOnAction(/* TODO: */);
+        pointerButton.setOnAction(event -> CursorManager.setCursorType(CursorType.POINTER));
 
-        Button pumpButton = new Button();
-        pumpButton.setGraphic(new ImageView(ImageManager.getImage("pump32")));
-        pumpButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.PUMP));
+        Button deleteButton = new Button();
+        deleteButton.setGraphic(new ImageView(ImageManager.getImage("delete32")));
+        deleteButton.setOnAction(event -> deleteButtonClicked());
 
-        Button splitterButton = new Button();
-        splitterButton.setGraphic(new ImageView(ImageManager.getImage("splitter32")));
-        splitterButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.SPLITTER));
+        // set up the 4 buttons that select objects
+        Button pumpButton = createButton(CursorType.PUMP);
+        Button splitterButton = createButton(CursorType.SPLITTER);
+        Button mergerButton = createButton(CursorType.MERGER);
+        Button sinkButton = createButton(CursorType.SINK);
 
-        Button mergerButton = new Button();
-        mergerButton.setGraphic(new ImageView(ImageManager.getImage("merger32")));
-        mergerButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.MERGER));
-
-        Button sinkButton = new Button();
-        sinkButton.setGraphic(new ImageView(ImageManager.getImage("sink32")));
-        sinkButton.setOnAction(event -> NetworkFactory.setSelected(NetworkObjectType.SINK));
-
+        // add the file menu, separators and the object buttons to the button bar
         buttonBar.getChildren().addAll(
                 fileMenuButton, new Separator(Orientation.VERTICAL),
                 pointerButton, deleteButton, new Separator(Orientation.VERTICAL),
@@ -100,13 +96,34 @@ public class PipeFlowTool extends Application {
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
     }
 
-    private void setUpCanvas(Canvas canvas) {
+    private Button createButton(CursorType cursor) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(
+                ImageManager.getImage(cursor.toString().toLowerCase() + "32")));
+        button.setOnAction(event -> selectObjectToCreate(cursor));
+        return button;
+    }
+
+    private void deleteButtonClicked() {
+        if (!canvasPanel.deleteSelectedObjects()) {
+            CursorManager.setCursorType(CursorType.DELETE);
+        }
+    }
+
+    private void selectObjectToCreate(CursorType objectType) {
+        NetworkFactory.setSelected(objectType);
+        CursorManager.setCursorType(objectType);
+    }
+
+    private Canvas setUpCanvas(VBox root) {
+        Canvas canvas = new Canvas();
         canvasPanel = new CanvasPanel(canvas);
 
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         canvas.widthProperty().addListener(observable -> canvasPanel.redraw());
         canvas.heightProperty().addListener(observable -> canvasPanel.redraw());
+        return canvas;
     }
 
     private void openFile(Stage primaryStage) {

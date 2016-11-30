@@ -52,7 +52,7 @@ public class NetworkManager {
         objects.forEach(obj -> obj.setSelected(false));
     }
 
-    public void deleteSelected() {
-        objects.removeIf(NetworkObject::isSelected);
+    public boolean deleteSelected() {
+        return objects.removeIf(NetworkObject::isSelected);
     }
 }

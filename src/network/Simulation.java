@@ -1,7 +1,7 @@
 package network;
 
 import javafx.scene.canvas.GraphicsContext;
-import object.NetworkObject;
+import object.Component;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,11 +9,11 @@ import java.util.Optional;
 /**
  * Manages all the objects in the network.
  */
-public class NetworkManager {
+public class Simulation {
 
-    private ArrayList<NetworkObject> objects = new ArrayList<>();
+    private ArrayList<Component> objects = new ArrayList<>();
 
-    public void add(NetworkObject obj) {
+    public void add(Component obj) {
         if (!objects.contains(obj)) {
             objects.add(obj);
         }
@@ -31,20 +31,20 @@ public class NetworkManager {
      * Use for moving all objects or making it look like we are moving the viewport.
      */
     public void moveObjects(final int x, final int y) {
-        if (objects.stream().anyMatch(NetworkObject::isSelected)) {
+        if (objects.stream().anyMatch(Component::isSelected)) {
             objects.stream()
-                    .filter(NetworkObject::isSelected)
+                    .filter(Component::isSelected)
                     .forEach(obj -> obj.translate(x, y));
         } else {
             objects.forEach(obj -> obj.translate(x, y));
         }
     }
 
-    public Optional<NetworkObject> getObject(int x, int y) {
+    public Optional<Component> getObject(int x, int y) {
         return objects.stream().filter(obj -> obj.isClicked(x, y)).findFirst();
     }
 
-    public boolean doesOverlap(NetworkObject currentObject) {
+    public boolean doesOverlap(Component currentObject) {
         return objects.stream().anyMatch(obj -> obj.collidesWith(currentObject));
     }
 
@@ -53,6 +53,6 @@ public class NetworkManager {
     }
 
     public boolean deleteSelected() {
-        return objects.removeIf(NetworkObject::isSelected);
+        return objects.removeIf(Component::isSelected);
     }
 }

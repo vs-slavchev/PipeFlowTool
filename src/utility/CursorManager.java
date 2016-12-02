@@ -6,6 +6,9 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
+/**
+ * Controls the type of the cursor and its visual representation.
+ */
 public class CursorManager {
 
     public enum CursorType {POINTER, DELETE, PIPE, PUMP, SPLITTER, MERGER, SINK}

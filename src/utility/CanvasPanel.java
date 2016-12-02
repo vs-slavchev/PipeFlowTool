@@ -7,8 +7,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import network.NetworkManager;
-import object.NetworkObject;
+import network.Simulation;
+import object.Component;
 import network.NetworkFactory;
 import utility.CursorManager.CursorType;
 
@@ -22,7 +22,7 @@ public class CanvasPanel {
     private Canvas canvas;
     private GraphicsContext graphicsContext;
 
-    private NetworkManager networkManager;
+    private Simulation simulation;
     private Point dragOrigin;
     private boolean isClick;
 
@@ -33,7 +33,7 @@ public class CanvasPanel {
         graphicsContext.setTextBaseline(VPos.CENTER);
         addEventHandlers();
 
-        networkManager = new NetworkManager();
+        simulation = new Simulation();
     }
 
     /**
@@ -43,8 +43,8 @@ public class CanvasPanel {
         // prepare background
         graphicsContext.setFill(Color.LIGHTGRAY);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        networkManager.drawPipes(graphicsContext);
-        networkManager.drawAllObjects(graphicsContext);
+        simulation.drawPipes(graphicsContext);
+        simulation.drawAllObjects(graphicsContext);
     }
 
     private void addEventHandlers() {
@@ -67,7 +67,7 @@ public class CanvasPanel {
             dragOrigin.setLocation(t.getX(), t.getY());
             isClick = false;
 
-            networkManager.moveObjects(horizontalDelta, verticalDelta);
+            simulation.moveObjects(horizontalDelta, verticalDelta);
         }
         redraw();
     }
@@ -78,28 +78,28 @@ public class CanvasPanel {
 
         if (isClick) {
             if (t.getButton() == MouseButton.PRIMARY) { /* TODO: check cursor type; add deleting
-                                                    with CursorManager.getCursorType() */
-                networkManager.deselectAll();
+                                                    with CursorManager.getCursorType() ? */
+                simulation.deselectAll();
 
                 // try to select an object, if found - show properties
-                Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
+                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                 if (selected.isPresent()) {
                     selected.get().showPropertiesDialog();
                 } else {
-                    NetworkObject created = NetworkFactory.createNetworkObject(cursorX, cursorY);
+                    Component created = NetworkFactory.createNetworkObject(cursorX, cursorY);
 
-                    if (networkManager.doesOverlap(created)) {
+                    if (simulation.doesOverlap(created)) {
                         AlertDialog.showInvalidInputAlert(
                                 "This spot overlaps with an existing object.");
                         return;
                     }
                     CursorManager.setCursorType(CursorType.POINTER);
-                    networkManager.add(created);
+                    simulation.add(created);
                 }
             }
 
             if (t.getButton() == MouseButton.SECONDARY) {
-                Optional<NetworkObject> selected = networkManager.getObject(cursorX, cursorY);
+                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                 if (selected.isPresent()) {
                     selected.get().toggleSelected();
                 }
@@ -109,7 +109,7 @@ public class CanvasPanel {
     }
 
     public boolean deleteSelectedObjects() {
-        boolean anyDeleted = networkManager.deleteSelected();
+        boolean anyDeleted = simulation.deleteSelected();
         redraw();
         return anyDeleted;
     }

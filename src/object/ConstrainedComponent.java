@@ -6,24 +6,24 @@ import utility.Values;
 
 import java.util.Optional;
 
-public class ConstrainedNetworkObject extends NetworkObject {
+public class ConstrainedComponent extends Component {
 
-    private FlowConstraints flowConstraints;
+    private FlowProperties flowProperties;
 
-    public ConstrainedNetworkObject(int x, int y, String imageName) {
+    public ConstrainedComponent(int x, int y, String imageName) {
         super(x, y, imageName);
-        flowConstraints = new FlowConstraints();
+        flowProperties = new FlowProperties();
     }
 
     public void setFlowCapacity(int flow, int capacity) {
-        flowConstraints.setFlow(flow);
-        flowConstraints.setCapacity(capacity);
+        flowProperties.setFlow(flow);
+        flowProperties.setCapacity(capacity);
     }
 
     @Override
     public void showPropertiesDialog() {
-        Optional<String> properties = flowConstraints.showPropertiesInputDialog();
-        flowConstraints.setObjectFlowAndCapacity(this, properties.orElse("10"));
+        Optional<String> properties = flowProperties.showPropertiesInputDialog();
+        flowProperties.setObjectFlowAndCapacity(this, properties.orElse("10"));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ConstrainedNetworkObject extends NetworkObject {
 
     public void drawFlowCapacity(GraphicsContext gc) {
         gc.setFill(Color.PURPLE);
-        gc.fillText(flowConstraints.toString(),
+        gc.fillText(flowProperties.toString(),
                 collisionBox.getX() + Values.OBJECT_SIZE / 2,
                 collisionBox.getY() + Values.INFO_VERTICAL_OFFSET);
     }

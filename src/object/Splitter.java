@@ -1,6 +1,6 @@
 package object;
 
-public class Splitter extends NetworkObject {
+public class Splitter extends Component {
 
     public Splitter(int x, int y) {
         super(x, y, "splitter64");

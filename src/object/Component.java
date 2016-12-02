@@ -10,14 +10,14 @@ import utility.Values;
 /**
  * The base of an object of the network.
  */
-public abstract class NetworkObject {
+public abstract class Component {
 
     protected Rectangle collisionBox;
     protected Image image;
 
     protected boolean selected;
 
-    public NetworkObject(int x, int y, String imageName) {
+    public Component(int x, int y, String imageName) {
         int boxX = x - Values.OBJECT_SIZE / 2;
         int boxY = y - Values.OBJECT_SIZE / 2;
         this.collisionBox = new Rectangle(boxX, boxY, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
@@ -28,10 +28,9 @@ public abstract class NetworkObject {
         return collisionBox.contains(x, y);
     }
 
-    public boolean collidesWith(NetworkObject currentObject) {
-        if (!this.equals(currentObject)) {
-            return this.collisionBox.intersects(
-                    currentObject.getCollisionBox().getBoundsInLocal());
+    public boolean collidesWith(Component other) {
+        if (!this.equals(other)) {
+            return this.collisionBox.intersects(other.getCollisionBox().getBoundsInLocal());
         }
         return false;
     }

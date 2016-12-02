@@ -9,7 +9,7 @@ public class NetworkFactory {
 
     private static CursorType selected;
 
-    public static NetworkObject createNetworkObject(int x, int y) {
+    public static Component createNetworkObject(int x, int y) {
         switch (selected) {
             case SPLITTER:
                 return new Splitter(x, y);

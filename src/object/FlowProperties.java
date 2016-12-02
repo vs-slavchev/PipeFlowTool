@@ -10,12 +10,12 @@ import java.util.Optional;
  * A component to be used in objects which have flow and capacity.
  * Also responsible for showing input dialog and validating input.
  */
-public class FlowConstraints {
+public class FlowProperties {
 
     private int flow;
     private int capacity;
 
-    public FlowConstraints() {
+    public FlowProperties() {
         flow = capacity = Values.DEFAULT_FLOW_INPUT;
     }
 
@@ -55,7 +55,7 @@ public class FlowConstraints {
      * @param object
      * @param input
      */
-    public void setObjectFlowAndCapacity(ConstrainedNetworkObject object, String input) {
+    public void setObjectFlowAndCapacity(ConstrainedComponent object, String input) {
         int flow = Values.DEFAULT_FLOW_INPUT;
         int capacity = flow;
         try {

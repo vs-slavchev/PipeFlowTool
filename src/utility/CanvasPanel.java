@@ -81,12 +81,22 @@ public class CanvasPanel {
                                                     with CursorManager.getCursorType() ? */
                 simulation.deselectAll();
 
-                // try to select an object, if found - show properties
-                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
-                if (selected.isPresent()) {
-                    selected.get().showPropertiesDialog();
+                if (CursorManager.getCursorType() == CursorType.POINTER) {
+                    // try to select an object, if found - show properties
+                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
+                    if (selected.isPresent()) {
+                        selected.get().showPropertiesDialog();
+                    }
+                } else if (CursorManager.getCursorType() == CursorType.DELETE) {
+                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
+                    if (selected.isPresent()) {
+                        selected.get().setSelected(true);
+                        simulation.deleteSelected();
+                    }
                 } else {
-                    Component created = NetworkFactory.createNetworkObject(cursorX, cursorY);
+                    Component created = NetworkFactory.createNetworkObject(
+                            CursorManager.getCursorType());
+                    created.setPosition(cursorX, cursorY);
 
                     if (simulation.doesOverlap(created)) {
                         AlertDialog.showInvalidInputAlert(
@@ -96,6 +106,7 @@ public class CanvasPanel {
                     CursorManager.setCursorType(CursorType.POINTER);
                     simulation.add(created);
                 }
+
             }
 
             if (t.getButton() == MouseButton.SECONDARY) {

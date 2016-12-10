@@ -10,8 +10,8 @@ public class ConstrainedComponent extends Component {
 
     private FlowProperties flowProperties;
 
-    public ConstrainedComponent(int x, int y, String imageName) {
-        super(x, y, imageName);
+    public ConstrainedComponent(String imageName) {
+        super(imageName);
         flowProperties = new FlowProperties();
     }
 

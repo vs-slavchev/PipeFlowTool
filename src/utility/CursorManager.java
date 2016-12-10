@@ -13,7 +13,7 @@ public class CursorManager {
 
     public enum CursorType {POINTER, DELETE, PIPE, PUMP, SPLITTER, MERGER, SINK}
 
-    private static CursorType cursorType;
+    private static CursorType cursorType = CursorType.POINTER;
     private static Scene scene;
 
     public static void setScene(Scene scene) {
@@ -37,7 +37,7 @@ public class CursorManager {
         }
     }
 
-    public CursorType getCursorType() {
+    public static CursorType getCursorType() {
         return cursorType;
     }
 }

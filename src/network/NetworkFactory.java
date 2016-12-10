@@ -7,22 +7,16 @@ import utility.CursorManager.CursorType;
 
 public class NetworkFactory {
 
-    private static CursorType selected;
-
-    public static Component createNetworkObject(int x, int y) {
+    public static Component createNetworkObject(CursorType selected) {
         switch (selected) {
             case SPLITTER:
-                return new Splitter(x, y);
+                return new Splitter();
             case MERGER:
-                return new Merger(x, y);
+                return new Merger();
             case SINK:
-                return new Sink(x, y);
+                return new Sink();
             default:
-                return new Pump(x, y);
+                return new Pump();
         }
-    }
-
-    public static void setSelected(CursorType type) {
-        selected = type;
     }
 }

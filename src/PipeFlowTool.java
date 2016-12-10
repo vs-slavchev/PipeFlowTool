@@ -100,7 +100,7 @@ public class PipeFlowTool extends Application {
         Button button = new Button();
         button.setGraphic(new ImageView(
                 ImageManager.getImage(cursor.toString().toLowerCase() + "32")));
-        button.setOnAction(event -> selectObjectToCreate(cursor));
+        button.setOnAction(event -> CursorManager.setCursorType(cursor));
         return button;
     }
 
@@ -108,11 +108,6 @@ public class PipeFlowTool extends Application {
         if (!canvasPanel.deleteSelectedObjects()) {
             CursorManager.setCursorType(CursorType.DELETE);
         }
-    }
-
-    private void selectObjectToCreate(CursorType objectType) {
-        NetworkFactory.setSelected(objectType);
-        CursorManager.setCursorType(objectType);
     }
 
     private Canvas setUpCanvas(VBox root) {

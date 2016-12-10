@@ -17,10 +17,8 @@ public abstract class Component {
 
     protected boolean selected;
 
-    public Component(int x, int y, String imageName) {
-        int boxX = x - Values.OBJECT_SIZE / 2;
-        int boxY = y - Values.OBJECT_SIZE / 2;
-        this.collisionBox = new Rectangle(boxX, boxY, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
+    public Component(String imageName) {
+        this.collisionBox = new Rectangle(0, 0, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
         image = ImageManager.getImage(imageName);
     }
 
@@ -50,6 +48,14 @@ public abstract class Component {
             gc.strokeRect(collisionBox.getX(), collisionBox.getY(),
                     collisionBox.getWidth(), collisionBox.getHeight());
         }
+    }
+
+    public void setPosition(int x, int y) {
+        int boxX = x - Values.OBJECT_SIZE / 2;
+        int boxY = y - Values.OBJECT_SIZE / 2;
+
+        collisionBox.setX(boxX);
+        collisionBox.setY(boxY);
     }
 
     public void translate(final int x, final int y) {

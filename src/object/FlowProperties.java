@@ -1,6 +1,8 @@
 package object;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.paint.Color;
 import utility.AlertDialog;
 import utility.Values;
 
@@ -17,6 +19,28 @@ public class FlowProperties {
 
     public FlowProperties() {
         flow = capacity = Values.DEFAULT_FLOW_INPUT;
+    }
+
+    /**
+     * Show an input dialog and ask user for values. Control the case when input is null.
+     * Set valid values for flow and capacity.
+     */
+    public void inputFlowPropertyValues() {
+        Optional<String> properties = showPropertiesInputDialog();
+        String input = properties.orElse("10");
+
+        int inputFlow = Values.DEFAULT_FLOW_INPUT;
+        int inputCapacity = inputFlow;
+        try {
+            inputFlow = extractTextInputData(input, 0);
+            inputCapacity = extractTextInputData(input, 1);
+        } catch (NumberFormatException | IndexOutOfBoundsException ex) {
+            AlertDialog.showInvalidInputAlert("The values were not numbers.\n" +
+                    "Default values are assigned.");
+        } finally {
+            setFlow(inputFlow);
+            setCapacity(inputCapacity);
+        }
     }
 
     /**
@@ -51,25 +75,6 @@ public class FlowProperties {
     }
 
     /**
-     * Set valid values for the flow and capacity of a network object from an input string.
-     * @param object
-     * @param input
-     */
-    public void setObjectFlowAndCapacity(ConstrainedComponent object, String input) {
-        int flow = Values.DEFAULT_FLOW_INPUT;
-        int capacity = flow;
-        try {
-            flow = extractTextInputData(input, 0);
-            capacity = extractTextInputData(input, 1);
-        } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-            AlertDialog.showInvalidInputAlert("The values were not numbers.\n" +
-                    "Default values are assigned.");
-        } finally {
-            object.setFlowCapacity(flow, capacity);
-        }
-    }
-
-    /**
      * Get the integer values out of the input string.
      *
      * @param string   the input string
@@ -84,6 +89,11 @@ public class FlowProperties {
         } else {
             return Integer.parseInt(string);
         }
+    }
+
+    public void drawFlowCapacity(GraphicsContext gc, int x, int y) {
+        gc.setFill(Color.PURPLE);
+        gc.fillText(this.toString(), x, y);
     }
 
     @Override

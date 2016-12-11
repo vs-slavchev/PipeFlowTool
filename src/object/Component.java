@@ -1,74 +1,36 @@
 package object;
 
-import file.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import utility.Values;
 
 /**
  * The base of an object of the network.
  */
 public abstract class Component {
 
-    protected Rectangle collisionBox;
-    protected Image image;
-
+    protected FlowProperties flowProperties;
     protected boolean selected;
 
-    public Component(String imageName) {
-        this.collisionBox = new Rectangle(0, 0, Values.OBJECT_SIZE, Values.OBJECT_SIZE);
-        image = ImageManager.getImage(imageName);
+    public Component() {
+        flowProperties = new FlowProperties();
     }
 
-    public boolean isClicked(final int x, final int y) {
-        return collisionBox.contains(x, y);
-    }
+    public abstract boolean isClicked(int x, int y);
 
-    public boolean collidesWith(Component other) {
-        if (!this.equals(other)) {
-            return this.collisionBox.intersects(other.getCollisionBox().getBoundsInLocal());
-        }
-        return false;
-    }
+    public abstract boolean collidesWith(Component other);
+
+    public abstract void draw(GraphicsContext gc);
+
+    public abstract void setPosition(int x, int y);
 
     /**
-     * Draw the image of the object in the center of its coordinates.
+     * Move the component a certain amount of distance from its current position.
+     * @param dx distance to move over X axis
+     * @param dy distance to move over Y axis
      */
-    public void draw(GraphicsContext gc) {
-        gc.drawImage(image, collisionBox.getX(), collisionBox.getY());
-        drawHighlighting(gc);
-    }
-
-    private void drawHighlighting(GraphicsContext gc) {
-        if (selected) {
-            gc.setStroke(Color.GREEN);
-            gc.setLineWidth(4);
-            gc.strokeRect(collisionBox.getX(), collisionBox.getY(),
-                    collisionBox.getWidth(), collisionBox.getHeight());
-        }
-    }
-
-    public void setPosition(int x, int y) {
-        int boxX = x - Values.OBJECT_SIZE / 2;
-        int boxY = y - Values.OBJECT_SIZE / 2;
-
-        collisionBox.setX(boxX);
-        collisionBox.setY(boxY);
-    }
-
-    public void translate(final int x, final int y) {
-        collisionBox.setX(collisionBox.getX() + x);
-        collisionBox.setY(collisionBox.getY() + y);
-    }
+    public abstract void translate(int dx, int dy);
 
     public void showPropertiesDialog() {
-        // intentionally empty
-    }
-
-    public Rectangle getCollisionBox() {
-        return collisionBox;
+        flowProperties.inputFlowPropertyValues();
     }
 
     public void toggleSelected() {

@@ -7,7 +7,7 @@ import utility.CursorManager.CursorType;
 
 public class NetworkFactory {
 
-    public static Component createNetworkObject(CursorType selected) {
+    public static ComponentWithImage createNetworkObject(CursorType selected) {
         switch (selected) {
             case SPLITTER:
                 return new Splitter();

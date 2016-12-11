@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import network.Simulation;
-import object.Component;
+import object.ComponentWithImage;
 import network.NetworkFactory;
 import utility.CursorManager.CursorType;
 
@@ -61,7 +61,8 @@ public class CanvasPanel {
     }
 
     private void mouseDragged(MouseEvent t) {
-        if (t.getButton() == MouseButton.PRIMARY) {
+        if (t.getButton() == MouseButton.PRIMARY
+                && CursorManager.getCursorType() == CursorType.POINTER) {
             int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
             int verticalDelta = (int) (t.getY() - dragOrigin.getY());
             dragOrigin.setLocation(t.getX(), t.getY());
@@ -77,24 +78,23 @@ public class CanvasPanel {
         int cursorY = (int) t.getY();
 
         if (isClick) {
-            if (t.getButton() == MouseButton.PRIMARY) { /* TODO: check cursor type; add deleting
-                                                    with CursorManager.getCursorType() ? */
+            if (t.getButton() == MouseButton.PRIMARY) {
                 simulation.deselectAll();
 
                 if (CursorManager.getCursorType() == CursorType.POINTER) {
                     // try to select an object, if found - show properties
-                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
+                    Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
                     if (selected.isPresent()) {
                         selected.get().showPropertiesDialog();
                     }
                 } else if (CursorManager.getCursorType() == CursorType.DELETE) {
-                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
+                    Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
                     if (selected.isPresent()) {
                         selected.get().setSelected(true);
                         simulation.deleteSelected();
                     }
                 } else {
-                    Component created = NetworkFactory.createNetworkObject(
+                    ComponentWithImage created = NetworkFactory.createNetworkObject(
                             CursorManager.getCursorType());
                     created.setPosition(cursorX, cursorY);
 
@@ -110,7 +110,7 @@ public class CanvasPanel {
             }
 
             if (t.getButton() == MouseButton.SECONDARY) {
-                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
+                Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
                 if (selected.isPresent()) {
                     selected.get().toggleSelected();
                 }

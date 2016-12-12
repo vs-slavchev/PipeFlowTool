@@ -22,19 +22,24 @@ public class CursorManager {
 
     public static void setCursorType(CursorType cursorType) {
         CursorManager.cursorType = cursorType;
-        scene.setCursor(getCursor());
+        scene.setCursor(createCursorImage());
     }
 
-    public static Cursor getCursor() {
+    public static Cursor createCursorImage() {
+        String imageSize;
         if (cursorType == CursorType.POINTER) {
             return new ImageCursor();
-        } else {
-            String cursorImageName = cursorType.toString().toLowerCase() + "64";
-            Image cursorImage = ImageManager.getImage(cursorImageName);
-            return new ImageCursor(cursorImage,
-                    cursorImage.getWidth() / 2,
-                    cursorImage.getHeight() / 2);
         }
+        else if (cursorType == CursorType.DELETE || cursorType == CursorType.PIPE) {
+            imageSize = "32";
+        } else {
+            imageSize = "64";
+        }
+        String cursorImageName = cursorType.toString().toLowerCase() + imageSize;
+        Image cursorImage = ImageManager.getImage(cursorImageName);
+        return new ImageCursor(cursorImage,
+                cursorImage.getWidth() / 2,
+                cursorImage.getHeight() / 2);
     }
 
     public static CursorType getCursorType() {

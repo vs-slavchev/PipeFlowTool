@@ -1,6 +1,7 @@
 package network;
 
 import javafx.scene.canvas.GraphicsContext;
+import object.Component;
 import object.ComponentWithImage;
 
 import java.util.ArrayList;
@@ -11,16 +12,12 @@ import java.util.Optional;
  */
 public class Simulation {
 
-    private ArrayList<ComponentWithImage> objects = new ArrayList<>();
+    private ArrayList<Component> objects = new ArrayList<>();
 
-    public void add(ComponentWithImage obj) {
+    public void add(Component obj) {
         if (!objects.contains(obj)) {
             objects.add(obj);
         }
-    }
-
-    public void drawPipes(GraphicsContext gc) {
-
     }
 
     public void drawAllObjects(GraphicsContext gc) {
@@ -31,16 +28,17 @@ public class Simulation {
      * Use for moving all objects or making it look like we are moving the viewport.
      */
     public void moveObjects(final int x, final int y) {
-        if (objects.stream().anyMatch(ComponentWithImage::isSelected)) {
+        boolean anyComponentSelected = objects.stream().anyMatch(Component::isSelected);
+        if (anyComponentSelected) {
             objects.stream()
-                    .filter(ComponentWithImage::isSelected)
+                    .filter(Component::isSelected)
                     .forEach(obj -> obj.translate(x, y));
         } else {
             objects.forEach(obj -> obj.translate(x, y));
         }
     }
 
-    public Optional<ComponentWithImage> getObject(int x, int y) {
+    public Optional<Component> getObject(int x, int y) {
         return objects.stream().filter(obj -> obj.isClicked(x, y)).findFirst();
     }
 
@@ -53,6 +51,6 @@ public class Simulation {
     }
 
     public boolean deleteSelected() {
-        return objects.removeIf(ComponentWithImage::isSelected);
+        return objects.removeIf(Component::isSelected);
     }
 }

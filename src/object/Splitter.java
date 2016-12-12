@@ -15,7 +15,7 @@ public class Splitter extends ComponentWithImage {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, collisionBox.getX(), collisionBox.getY());
+        gc.drawImage(image, position.getX(), position.getY());
         drawHighlighting(gc);
     }
 }

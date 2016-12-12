@@ -26,8 +26,8 @@ public class ImageManager {
                 "sink32",
                 "sink64",
                 "delete32",
-                "delete64",
-                "pointer32"
+                "pointer32",
+                "pipe32"
         };
         Arrays.stream(imageNames).forEach(ImageManager::loadImage);
     }

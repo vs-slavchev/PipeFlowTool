@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import network.Simulation;
+import object.Component;
 import object.ComponentWithImage;
 import network.NetworkFactory;
 import utility.CursorManager.CursorType;
@@ -43,7 +44,6 @@ public class CanvasPanel {
         // prepare background
         graphicsContext.setFill(Color.LIGHTGRAY);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        simulation.drawPipes(graphicsContext);
         simulation.drawAllObjects(graphicsContext);
     }
 
@@ -57,18 +57,27 @@ public class CanvasPanel {
         dragOrigin = new Point((int) t.getX(), (int) t.getY());
         isClick = true;
 
+        if (t.getButton() == MouseButton.PRIMARY
+                && CursorManager.getCursorType() == CursorType.PIPE) {
+            Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
+            if (selected.isPresent()) {
+                NetworkFactory.startPipe(selected.get());
+            }
+        }
+
         redraw();
     }
 
     private void mouseDragged(MouseEvent t) {
-        if (t.getButton() == MouseButton.PRIMARY
-                && CursorManager.getCursorType() == CursorType.POINTER) {
+        if (t.getButton() == MouseButton.PRIMARY) {
             int horizontalDelta = (int) (t.getX() - dragOrigin.getX());
             int verticalDelta = (int) (t.getY() - dragOrigin.getY());
             dragOrigin.setLocation(t.getX(), t.getY());
             isClick = false;
 
-            simulation.moveObjects(horizontalDelta, verticalDelta);
+            if (CursorManager.getCursorType() == CursorType.POINTER) {
+                simulation.moveObjects(horizontalDelta, verticalDelta);
+            }
         }
         redraw();
     }
@@ -83,12 +92,12 @@ public class CanvasPanel {
 
                 if (CursorManager.getCursorType() == CursorType.POINTER) {
                     // try to select an object, if found - show properties
-                    Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
+                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                     if (selected.isPresent()) {
                         selected.get().showPropertiesDialog();
                     }
                 } else if (CursorManager.getCursorType() == CursorType.DELETE) {
-                    Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
+                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                     if (selected.isPresent()) {
                         selected.get().setSelected(true);
                         simulation.deleteSelected();
@@ -96,7 +105,7 @@ public class CanvasPanel {
                 } else {
                     ComponentWithImage created = NetworkFactory.createNetworkObject(
                             CursorManager.getCursorType());
-                    created.setPosition(cursorX, cursorY);
+                    created.setCenterPosition(cursorX, cursorY);
 
                     if (simulation.doesOverlap(created)) {
                         AlertDialog.showInvalidInputAlert(
@@ -110,9 +119,19 @@ public class CanvasPanel {
             }
 
             if (t.getButton() == MouseButton.SECONDARY) {
-                Optional<ComponentWithImage> selected = simulation.getObject(cursorX, cursorY);
+                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                 if (selected.isPresent()) {
                     selected.get().toggleSelected();
+                }
+            }
+        } else {
+            if (t.getButton() == MouseButton.PRIMARY
+                    && CursorManager.getCursorType() == CursorType.PIPE) {
+                Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
+                if (selected.isPresent()) {
+                    simulation.add(NetworkFactory.finishPipe(selected.get()));
+                } else {
+                    NetworkFactory.stopBuildingPipe();
                 }
             }
         }

@@ -10,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import network.NetworkFactory;
 import utility.CanvasPanel;
 import utility.CursorManager;
 import utility.CursorManager.CursorType;
@@ -81,17 +80,18 @@ public class PipeFlowTool extends Application {
         deleteButton.setGraphic(new ImageView(ImageManager.getImage("delete32")));
         deleteButton.setOnAction(event -> deleteButtonClicked());
 
-        // set up the 4 buttons that select objects
+        // set up the buttons that select objects
         Button pumpButton = createButton(CursorType.PUMP);
         Button splitterButton = createButton(CursorType.SPLITTER);
         Button mergerButton = createButton(CursorType.MERGER);
         Button sinkButton = createButton(CursorType.SINK);
+        Button pipeButton = createButton(CursorType.PIPE);
 
         // add the file menu, separators and the object buttons to the button bar
         buttonBar.getChildren().addAll(
                 fileMenuButton, new Separator(Orientation.VERTICAL),
                 pointerButton, deleteButton, new Separator(Orientation.VERTICAL),
-                pumpButton, splitterButton, mergerButton, sinkButton);
+                pumpButton, splitterButton, mergerButton, sinkButton, pipeButton);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
     }

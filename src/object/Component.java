@@ -20,8 +20,6 @@ public abstract class Component {
 
     public abstract void draw(GraphicsContext gc);
 
-    public abstract void setPosition(int x, int y);
-
     /**
      * Move the component a certain amount of distance from its current position.
      * @param dx distance to move over X axis

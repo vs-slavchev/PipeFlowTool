@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import utility.Point;
 import utility.Values;
 
 /**
@@ -12,25 +13,25 @@ import utility.Values;
  */
 public abstract class ComponentWithImage extends Component {
 
-    protected Rectangle collisionBox;
+    protected Point position;
     protected Image image;
 
     public ComponentWithImage(String imageName) {
         image = ImageManager.getImage(imageName);
-        this.collisionBox = new Rectangle(0, 0, image.getWidth(), image.getHeight());
+        position = new Point(0, 0);
     }
 
     @Override
     public boolean isClicked(final int x, final int y) {
-        return collisionBox.contains(x, y);
+        return calculateCollisionBox().contains(x, y);
     }
 
     @Override
     public boolean collidesWith(Component other) {
         if (!this.equals(other)) {
             if (other instanceof ComponentWithImage) { // temporary hack; TODO fix hack
-                return this.collisionBox.intersects(
-                        ((ComponentWithImage)other).getCollisionBox().getBoundsInLocal());
+                return calculateCollisionBox().intersects(
+                        ((ComponentWithImage)other).calculateCollisionBox().getBoundsInLocal());
             }
         }
         return false;
@@ -41,38 +42,42 @@ public abstract class ComponentWithImage extends Component {
      */
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, collisionBox.getX(), collisionBox.getY());
+        gc.drawImage(image, position.getX(), position.getY());
         drawHighlighting(gc);
         flowProperties.drawFlowCapacity(gc,
-                (int) collisionBox.getX() + Values.OBJECT_SIZE / 2,
-                (int) collisionBox.getY() + Values.INFO_VERTICAL_OFFSET);
+                position.getX() + Values.OBJECT_SIZE / 2,
+                position.getY() + Values.INFO_VERTICAL_OFFSET);
     }
 
     protected void drawHighlighting(GraphicsContext gc) {
         if (selected) {
             gc.setStroke(Color.GREEN);
             gc.setLineWidth(4);
-            gc.strokeRect(collisionBox.getX(), collisionBox.getY(),
-                    collisionBox.getWidth(), collisionBox.getHeight());
+            gc.strokeRect(position.getX(), position.getY(),
+                    image.getWidth(), image.getHeight());
         }
     }
 
     @Override
-    public void setPosition(int x, int y) {
-        int boxX = x - Values.OBJECT_SIZE / 2;
-        int boxY = y - Values.OBJECT_SIZE / 2;
-
-        collisionBox.setX(boxX);
-        collisionBox.setY(boxY);
-    }
-
-    @Override
     public void translate(final int dx, final int dy) {
-        collisionBox.setX(collisionBox.getX() + dx);
-        collisionBox.setY(collisionBox.getY() + dy);
+        position.translate(dx, dy);
     }
 
-    public Rectangle getCollisionBox() {
-        return collisionBox;
+    public Rectangle calculateCollisionBox() {
+        return new Rectangle(position.getX(), position.getY(),
+                image.getWidth(), image.getHeight());
+    }
+
+    public void setCenterPosition(int x, int y) {
+        int boxOriginX = x - Values.OBJECT_SIZE / 2;
+        int boxOriginY = y - Values.OBJECT_SIZE / 2;
+
+        position.setLocation(boxOriginX, boxOriginY);
+    }
+
+    public Point getCenterPosition() {
+        Point center = new Point(position);
+        center.translate((int)image.getWidth() / 2, (int)image.getHeight() / 2);
+        return center;
     }
 }

@@ -1,7 +1,5 @@
 package network;
 
-// TODO: add pipe creation and setting up;
-
 import object.*;
 import utility.CursorManager.CursorType;
 
@@ -22,6 +20,10 @@ public class NetworkFactory {
         }
     }
 
+    /**
+     * Start building a pipe object by giving it a component to start from.
+     * @param pipeInput
+     */
     public static void startPipe(Component pipeInput) {
         if (pipeInput instanceof ComponentWithImage) {
             notFinished = new Pipe();
@@ -29,10 +31,18 @@ public class NetworkFactory {
         }
     }
 
+    /**
+     * Abandon the pipe that is currently being built.
+     */
     public static void stopBuildingPipe() {
         notFinished = null;
     }
 
+    /**
+     * Finish the building of a pipe by giving the second component to end at.
+     * @param pipeOutput
+     * @return a completed pipe
+     */
     public static Pipe finishPipe(Component pipeOutput) {
         if (pipeOutput instanceof ComponentWithImage) {
             notFinished.addJoin((ComponentWithImage)pipeOutput);

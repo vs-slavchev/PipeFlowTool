@@ -43,7 +43,7 @@ public class Simulation {
     }
 
     public boolean doesOverlap(ComponentWithImage currentObject) {
-        return objects.stream().anyMatch(obj -> obj.collidesWith(currentObject));
+        return objects.stream().anyMatch(obj -> obj.overlaps(currentObject));
     }
 
     public void deselectAll() {

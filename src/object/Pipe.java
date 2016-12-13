@@ -21,7 +21,7 @@ public class Pipe extends Component {
     }
 
     @Override
-    public boolean collidesWith(Component other) {
+    public boolean overlaps(Component other) {
         return false;
     }
 

@@ -14,9 +14,16 @@ public abstract class Component {
         flowProperties = new FlowProperties();
     }
 
+    /**
+     * Check if the current component contains the point specified.
+     */
     public abstract boolean isClicked(int x, int y);
 
-    public abstract boolean collidesWith(Component other);
+    /**
+     * Check if the current component overlaps another one.
+     * @param other
+     */
+    public abstract boolean overlaps(Component other);
 
     public abstract void draw(GraphicsContext gc);
 

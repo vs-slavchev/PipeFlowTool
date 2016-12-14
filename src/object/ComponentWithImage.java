@@ -39,18 +39,22 @@ public abstract class ComponentWithImage extends Component {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, position.getX(), position.getY());
+        gc.drawImage(image,
+                position.getX() - (int)image.getWidth() / 2,
+                position.getY() - (int)image.getHeight() / 2);
         drawHighlighting(gc);
         flowProperties.drawFlowCapacity(gc,
-                position.getX() + (int)image.getWidth() / 2,
-                position.getY() + (int)image.getHeight() + Values.INFO_VERTICAL_OFFSET);
+                position.getX(),
+                position.getY() + (int)image.getHeight() / 2 + Values.INFO_VERTICAL_OFFSET);
     }
 
     protected void drawHighlighting(GraphicsContext gc) {
         if (selected) {
             gc.setStroke(Color.GREEN);
             gc.setLineWidth(4);
-            gc.strokeRect(position.getX(), position.getY(), image.getWidth(), image.getHeight());
+            gc.strokeRect(position.getX()  - (int)image.getWidth() / 2,
+                    position.getY()  - (int)image.getHeight() / 2,
+                    image.getWidth(), image.getHeight());
         }
     }
 
@@ -60,20 +64,16 @@ public abstract class ComponentWithImage extends Component {
     }
 
     public Rectangle calculateCollisionBox() {
-        return new Rectangle(position.getX(), position.getY(),
+        return new Rectangle(position.getX()  - (int)image.getWidth() / 2,
+                position.getY() - (int)image.getHeight() / 2,
                 image.getWidth(), image.getHeight());
     }
 
     public void setCenterPosition(int x, int y) {
-        int boxOriginX = x - (int)image.getWidth() / 2;
-        int boxOriginY = y - (int)image.getHeight() / 2;
-
-        position.setLocation(boxOriginX, boxOriginY);
+        position.setLocation(x, y);
     }
 
     public Point getCenterPosition() {
-        Point center = new Point(position);
-        center.translate((int)image.getWidth() / 2, (int)image.getHeight() / 2);
-        return center;
+        return position;
     }
 }

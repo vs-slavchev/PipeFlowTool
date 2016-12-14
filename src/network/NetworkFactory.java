@@ -44,7 +44,7 @@ public class NetworkFactory {
      * @return a completed pipe
      */
     public static Pipe finishPipe(Component pipeOutput) {
-        if (pipeOutput instanceof ComponentWithImage) {
+        if (pipeOutput instanceof ComponentWithImage && notFinished != null) {
             notFinished.addJoin((ComponentWithImage)pipeOutput);
             Pipe finished = notFinished;
             notFinished = null;

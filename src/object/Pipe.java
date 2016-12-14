@@ -10,9 +10,7 @@ public class Pipe extends Component {
     private ArrayList<Join> joins = new ArrayList<>();
 
     public void addJoin(ComponentWithImage component) {
-        joins.add(new Join(
-                component.getCenterPosition().getX(),
-                component.getCenterPosition().getY()));
+        joins.add(new Join(component.getCenterPosition()));
     }
 
     @Override
@@ -40,7 +38,9 @@ public class Pipe extends Component {
 
     @Override
     public void translate(int dx, int dy) {
-        //TODO: maybe translate only inner joins, outer ones are shared with the objs?
-        joins.stream().forEach(join -> join.translate(dx, dy));
+        //translate only inner joins, outer points are shared with the components
+        for (int index = 1; index < joins.size() - 1; index++) {
+            joins.get(index).translate(dx, dy);
+        }
     }
 }

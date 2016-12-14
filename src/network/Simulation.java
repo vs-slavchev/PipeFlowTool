@@ -3,6 +3,7 @@ package network;
 import javafx.scene.canvas.GraphicsContext;
 import object.Component;
 import object.ComponentWithImage;
+import object.Pipe;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,7 +22,8 @@ public class Simulation {
     }
 
     public void drawAllObjects(GraphicsContext gc) {
-        objects.forEach(obj -> obj.draw(gc));
+        objects.stream().filter(obj -> obj instanceof Pipe).forEach(obj -> obj.draw(gc));
+        objects.stream().filter(obj -> !(obj instanceof Pipe)).forEach(obj -> obj.draw(gc));
     }
 
     /**

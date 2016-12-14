@@ -1,15 +1,29 @@
 package object;
 
+import javafx.scene.canvas.GraphicsContext;
 import utility.Point;
 
-public class Join extends Point{
+public class Join {
 
-    public Join(int x, int y) {
-        super(x, y);
+    private Point location;
+
+    public Join(Point location) {
+        this.location = location;
     }
 
-    public Join(Point position) {
-        this.x = position.getX();
-        this.y = position.getY();
+    public void drawJoin(GraphicsContext gc) {
+
+    }
+
+    public int getX() {
+        return location.getX();
+    }
+
+    public int getY() {
+        return location.getY();
+    }
+
+    public void translate(int dx, int dy) {
+        location.translate(dx, dy);
     }
 }

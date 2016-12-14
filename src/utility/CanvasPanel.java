@@ -11,6 +11,7 @@ import network.Simulation;
 import object.Component;
 import object.ComponentWithImage;
 import network.NetworkFactory;
+import object.Pipe;
 import utility.CursorManager.CursorType;
 
 import java.util.Optional;
@@ -129,7 +130,10 @@ public class CanvasPanel {
                     && CursorManager.getCursorType() == CursorType.PIPE) {
                 Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
                 if (selected.isPresent()) {
-                    simulation.add(NetworkFactory.finishPipe(selected.get()));
+                    Pipe created = NetworkFactory.finishPipe(selected.get());
+                    if (created != null) {
+                        simulation.add(created);
+                    }
                 } else {
                     NetworkFactory.stopBuildingPipe();
                 }

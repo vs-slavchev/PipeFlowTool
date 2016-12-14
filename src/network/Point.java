@@ -1,4 +1,4 @@
-package utility;
+package network;
 
 public class Point {
     protected int x;

@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import utility.Point;
+import network.Point;
 import utility.Values;
 
 /**
@@ -40,8 +40,8 @@ public abstract class ComponentWithImage extends Component {
     @Override
     public void draw(GraphicsContext gc) {
         gc.drawImage(image,
-                position.getX() - (int)image.getWidth() / 2,
-                position.getY() - (int)image.getHeight() / 2);
+                calculateCollisionBox().getX(),
+                calculateCollisionBox().getY());
         drawHighlighting(gc);
         flowProperties.drawFlowCapacity(gc,
                 position.getX(),
@@ -52,8 +52,8 @@ public abstract class ComponentWithImage extends Component {
         if (selected) {
             gc.setStroke(Color.GREEN);
             gc.setLineWidth(4);
-            gc.strokeRect(position.getX()  - (int)image.getWidth() / 2,
-                    position.getY()  - (int)image.getHeight() / 2,
+            gc.strokeRect(calculateCollisionBox().getX(),
+                    calculateCollisionBox().getY(),
                     image.getWidth(), image.getHeight());
         }
     }

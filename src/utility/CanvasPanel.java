@@ -7,6 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import network.Point;
 import network.Simulation;
 import object.Component;
 import object.ComponentWithImage;
@@ -104,7 +105,7 @@ public class CanvasPanel {
                         simulation.deleteSelected();
                     }
                 } else {
-                    ComponentWithImage created = NetworkFactory.createNetworkObject(
+                    ComponentWithImage created = NetworkFactory.createComponent(
                             CursorManager.getCursorType());
                     created.setCenterPosition(cursorX, cursorY);
 

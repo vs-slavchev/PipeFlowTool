@@ -7,7 +7,7 @@ public class NetworkFactory {
 
     private static Pipe notFinished;
 
-    public static ComponentWithImage createNetworkObject(CursorType selected) {
+    public static ComponentWithImage createComponent(CursorType selected) {
         switch (selected) {
             case SPLITTER:
                 return new Splitter();

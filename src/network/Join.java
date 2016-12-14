@@ -1,7 +1,7 @@
-package object;
+package network;
 
 import javafx.scene.canvas.GraphicsContext;
-import utility.Point;
+import network.Point;
 
 public class Join {
 

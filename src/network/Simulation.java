@@ -7,6 +7,7 @@ import object.Pipe;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Manages all the objects in the network.
@@ -30,14 +31,12 @@ public class Simulation {
      * Use for moving all objects or making it look like we are moving the viewport.
      */
     public void moveObjects(final int x, final int y) {
+        Stream<Component> toMove = objects.stream();
         boolean anyComponentSelected = objects.stream().anyMatch(Component::isSelected);
         if (anyComponentSelected) {
-            objects.stream()
-                    .filter(Component::isSelected)
-                    .forEach(obj -> obj.translate(x, y));
-        } else {
-            objects.forEach(obj -> obj.translate(x, y));
+            toMove = objects.stream().filter(Component::isSelected);
         }
+        toMove.forEach(obj -> obj.translate(x, y));
     }
 
     public Optional<Component> getObject(int x, int y) {

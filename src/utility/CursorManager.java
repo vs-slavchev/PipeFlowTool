@@ -25,6 +25,10 @@ public class CursorManager {
         scene.setCursor(createCursorImage());
     }
 
+    /**
+     * Returns the correct image for the cursor depending on the cursor type.
+     * @return
+     */
     public static Cursor createCursorImage() {
         String imageSize;
         if (cursorType == CursorType.POINTER) {

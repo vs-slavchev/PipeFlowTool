@@ -3,7 +3,7 @@ package network;
 import object.*;
 import utility.CursorManager.CursorType;
 
-public class NetworkFactory {
+public class ComponentFactory {
 
     private static Pipe notFinished;
 

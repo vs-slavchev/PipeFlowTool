@@ -16,7 +16,7 @@ public class Simulation {
 
     private ArrayList<Component> objects = new ArrayList<>();
 
-    public void add(Component obj) {
+    public void addComponent(Component obj) {
         if (!objects.contains(obj)) {
             objects.add(obj);
         }
@@ -29,6 +29,7 @@ public class Simulation {
 
     /**
      * Use for moving all objects or making it look like we are moving the viewport.
+     * Moves all objects, or only the selected ones.
      */
     public void moveObjects(final int x, final int y) {
         Stream<Component> toMove = objects.stream();
@@ -43,8 +44,13 @@ public class Simulation {
         return objects.stream().filter(obj -> obj.isClicked(x, y)).findFirst();
     }
 
-    public boolean doesOverlap(ComponentWithImage currentObject) {
-        return objects.stream().anyMatch(obj -> obj.overlaps(currentObject));
+
+    /**
+     * Checks if the supplied component overlaps with another object.
+     * @param componentToTest the component to be tested
+     */
+    public boolean doesOverlap(ComponentWithImage componentToTest) {
+        return objects.stream().anyMatch(obj -> obj.overlaps(componentToTest));
     }
 
     public void deselectAll() {

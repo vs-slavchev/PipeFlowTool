@@ -5,7 +5,6 @@ import javafx.scene.paint.Color;
 import network.Join;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class Pipe extends Component {
 

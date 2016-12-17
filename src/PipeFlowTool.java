@@ -54,7 +54,7 @@ public class PipeFlowTool extends Application {
         fileMenuButton.setPrefHeight(Values.FILE_BUTTON_HEIGHT);
         fileMenuButton.setMaxHeight(Values.FILE_BUTTON_HEIGHT);
 
-        //add items to file menu button
+        //addComponent items to file menu button
         MenuItem newItem = new MenuItem("New simulation");
         MenuItem openItem = new MenuItem("Open simulation");
         SeparatorMenuItem separator = new SeparatorMenuItem();
@@ -87,7 +87,7 @@ public class PipeFlowTool extends Application {
         Button sinkButton = createButton(CursorType.SINK);
         Button pipeButton = createButton(CursorType.PIPE);
 
-        // add the file menu, separators and the object buttons to the button bar
+        // addComponent the file menu, separators and the object buttons to the button bar
         buttonBar.getChildren().addAll(
                 fileMenuButton, new Separator(Orientation.VERTICAL),
                 pointerButton, deleteButton, new Separator(Orientation.VERTICAL),
@@ -105,7 +105,7 @@ public class PipeFlowTool extends Application {
     }
 
     private void deleteButtonClicked() {
-        if (!canvasPanel.deleteSelectedObjects()) {
+        if (!canvasPanel.deleteSelectedComponents()) {
             CursorManager.setCursorType(CursorType.DELETE);
         }
     }

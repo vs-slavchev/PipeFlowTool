@@ -11,7 +11,7 @@ import network.Point;
 import network.Simulation;
 import object.Component;
 import object.ComponentWithImage;
-import network.NetworkFactory;
+import network.ComponentFactory;
 import object.Pipe;
 import utility.CursorManager.CursorType;
 
@@ -63,7 +63,7 @@ public class CanvasPanel {
                 && CursorManager.getCursorType() == CursorType.PIPE) {
             Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
             if (selected.isPresent()) {
-                NetworkFactory.startPipe(selected.get());
+                ComponentFactory.startPipe(selected.get());
             }
         }
 
@@ -98,14 +98,14 @@ public class CanvasPanel {
                     if (selected.isPresent()) {
                         selected.get().showPropertiesDialog();
                     }
-                } else if (CursorManager.getCursorType() == CursorType.DELETE) {
+                } else if (CursorManager.getCursorType() == CursorType.DELETE) { //move to simulatio
                     Optional<Component> selected = simulation.getObject(cursorX, cursorY);
                     if (selected.isPresent()) {
                         selected.get().setSelected(true);
                         simulation.deleteSelected();
                     }
-                } else {
-                    ComponentWithImage created = NetworkFactory.createComponent(
+                } else {// move to simulation
+                    ComponentWithImage created = ComponentFactory.createComponent(
                             CursorManager.getCursorType());
                     created.setCenterPosition(cursorX, cursorY);
 
@@ -115,7 +115,7 @@ public class CanvasPanel {
                         return;
                     }
                     CursorManager.setCursorType(CursorType.POINTER);
-                    simulation.add(created);
+                    simulation.addComponent(created);
                 }
 
             }
@@ -131,19 +131,19 @@ public class CanvasPanel {
                     && CursorManager.getCursorType() == CursorType.PIPE) {
                 Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
                 if (selected.isPresent()) {
-                    Pipe created = NetworkFactory.finishPipe(selected.get());
+                    Pipe created = ComponentFactory.finishPipe(selected.get());
                     if (created != null) {
-                        simulation.add(created);
+                        simulation.addComponent(created);
                     }
                 } else {
-                    NetworkFactory.stopBuildingPipe();
+                    ComponentFactory.stopBuildingPipe();
                 }
             }
         }
         redraw();
     }
 
-    public boolean deleteSelectedObjects() {
+    public boolean deleteSelectedComponents() {
         boolean anyDeleted = simulation.deleteSelected();
         redraw();
         return anyDeleted;

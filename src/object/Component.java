@@ -9,6 +9,7 @@ public abstract class Component {
 
     protected FlowProperties flowProperties;
     protected boolean selected;
+    protected Component next;
 
     public Component() {
         flowProperties = new FlowProperties();
@@ -33,6 +34,14 @@ public abstract class Component {
      * @param dy distance to move over Y axis
      */
     public abstract void translate(int dx, int dy);
+
+    public void update() {
+        next.update();
+    }
+
+    public void setNext(Component nextComponent) {
+        this.next = nextComponent;
+    }
 
     public void showPropertiesDialog() {
         flowProperties.inputFlowPropertyValues();

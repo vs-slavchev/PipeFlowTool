@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Pipe extends Component {
 
     private ArrayList<Join> joins = new ArrayList<>();
+    private Component input;
 
     public void addJoin(ComponentWithImage component) {
         joins.add(new Join(component.getCenterPosition()));
@@ -43,5 +44,13 @@ public class Pipe extends Component {
         for (int index = 1; index < joins.size() - 1; index++) {
             joins.get(index).translate(dx, dy);
         }
+    }
+
+    public Component getInput() {
+        return input;
+    }
+
+    public void setInput(Component input) {
+        this.input = input;
     }
 }

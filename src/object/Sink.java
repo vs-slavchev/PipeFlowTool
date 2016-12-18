@@ -6,4 +6,9 @@ public class Sink extends ComponentWithImage {
         super("sink64");
     }
 
+    @Override
+    public void setNext(Component nextComponent) {
+        // intentionally left empty
+    }
+
 }

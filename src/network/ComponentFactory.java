@@ -28,6 +28,7 @@ public class ComponentFactory {
         if (pipeInput instanceof ComponentWithImage) {
             notFinished = new Pipe();
             notFinished.addJoin((ComponentWithImage)pipeInput);
+            notFinished.setInput(pipeInput);
         }
     }
 
@@ -44,10 +45,15 @@ public class ComponentFactory {
      * @return a completed pipe
      */
     public static Pipe finishPipe(Component pipeOutput) {
-        if (pipeOutput instanceof ComponentWithImage && notFinished != null) {
+        if (pipeOutput instanceof ComponentWithImage
+                && notFinished != null
+                && notFinished.getInput() != pipeOutput) {
             notFinished.addJoin((ComponentWithImage)pipeOutput);
             Pipe finished = notFinished;
             notFinished = null;
+
+            finished.getInput().setNext(finished);
+            finished.setNext(pipeOutput);
             return finished;
         }
         return null;

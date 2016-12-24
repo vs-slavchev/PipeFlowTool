@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class FlowProperties {
 
-    private int flow;
+    private double flow;
     private int capacity;
 
     public FlowProperties() {
@@ -58,7 +58,7 @@ public class FlowProperties {
         return result;
     }
 
-    public void setFlow(final int flow) {
+    public void setFlow(final double flow) {
         this.flow = Math.max(flow, 0);
     }
 
@@ -66,7 +66,7 @@ public class FlowProperties {
         this.capacity = Math.max(capacity, 0);
     }
 
-    public int getFlow() {
+    public double getFlow() {
         return flow;
     }
 

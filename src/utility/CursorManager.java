@@ -33,12 +33,15 @@ public class CursorManager {
         String imageSize;
         if (cursorType == CursorType.POINTER) {
             return new ImageCursor();
+        }else if (cursorType == CursorType.PIPE) {
+            return Cursor.CROSSHAIR;
         }
-        else if (cursorType == CursorType.DELETE || cursorType == CursorType.PIPE) {
+        else if (cursorType == CursorType.DELETE) {
             imageSize = "32";
         } else {
             imageSize = "64";
         }
+
         String cursorImageName = cursorType.toString().toLowerCase() + imageSize;
         Image cursorImage = ImageManager.getImage(cursorImageName);
         return new ImageCursor(cursorImage,

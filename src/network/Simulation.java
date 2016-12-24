@@ -1,9 +1,12 @@
 package network;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import object.Component;
 import object.ComponentWithImage;
 import object.Pipe;
+import utility.AlertDialog;
+import utility.CursorManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -40,8 +43,8 @@ public class Simulation {
         toMove.forEach(obj -> obj.translate(x, y));
     }
 
-    public Optional<Component> getObject(int x, int y) {
-        return objects.stream().filter(obj -> obj.isClicked(x, y)).findFirst();
+    public Optional<Component> getObject(final Point clickLocation) {
+        return objects.stream().filter(obj -> obj.isClicked(clickLocation)).findFirst();
     }
 
 
@@ -59,5 +62,62 @@ public class Simulation {
 
     public boolean deleteSelected() {
         return objects.removeIf(Component::isSelected);
+    }
+
+    public void startPlottingPipe(MouseEvent event) {
+        Optional<Component> selected = getObject(new Point((int) event.getX(), (int) event.getY()));
+        if (selected.isPresent()) {
+            ComponentFactory.startPipe(selected.get());
+        }
+    }
+
+    public void showLocationProperties(Point clickLocation) {
+        // try to select an object, if found - show properties
+        Optional<Component> clicked = getObject(clickLocation);
+        if (clicked.isPresent()) {
+            clicked.get().showPropertiesDialog();
+        }
+    }
+
+    public void deleteOnLocation(Point clickLocation) {
+        Optional<Component> clicked = getObject(clickLocation);
+        if (clicked.isPresent()) {
+            objects.remove(clicked.get());
+        }
+    }
+
+    public void createComponentOnLocation(Point clickLocation) {
+        ComponentWithImage created = ComponentFactory.createComponent(
+                CursorManager.getCursorType());
+        created.setCenterPosition(clickLocation);
+
+        if (doesOverlap(created)) {
+            AlertDialog.showInvalidInputAlert(
+                    "This spot overlaps with an existing object.");
+            return;
+        }
+        CursorManager.setCursorType(CursorManager.CursorType.POINTER);
+        addComponent(created);
+    }
+
+
+    public void toggleSelectedOnLocation(Point clickLocation) {
+        Optional<Component> clicked = getObject(clickLocation);
+        if (clicked.isPresent()) {
+            clicked.get().toggleSelected();
+        }
+    }
+
+
+    public void finishPipeOnLocation(Point clickLocation) {
+        Optional<Component> clicked = getObject(clickLocation);
+        if (clicked.isPresent()) {
+            Pipe created = ComponentFactory.finishPipe(clicked.get());
+            if (created != null) {
+                addComponent(created);
+            }
+        } else {
+            ComponentFactory.stopBuildingPipe();
+        }
     }
 }

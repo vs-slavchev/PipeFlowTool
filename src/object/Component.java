@@ -1,6 +1,7 @@
 package object;
 
 import javafx.scene.canvas.GraphicsContext;
+import network.Point;
 
 /**
  * The base of an object of the network.
@@ -18,11 +19,11 @@ public abstract class Component {
     /**
      * Check if the current component contains the point specified.
      */
-    public abstract boolean isClicked(int x, int y);
+    public abstract boolean isClicked(Point clickLocation);
 
     /**
      * Check if the current component overlaps another one.
-     * @param other
+     * @param other the component to be checked against
      */
     public abstract boolean overlaps(Component other);
 
@@ -35,8 +36,12 @@ public abstract class Component {
      */
     public abstract void translate(int dx, int dy);
 
-    public void update() {
-        next.update();
+    /** Set the flow of the next component accordingly.
+     * @param previousFlow the flow of the previous component
+     */
+    public void update(double previousFlow) {
+        flowProperties.setFlow(previousFlow);
+        next.update(previousFlow);
     }
 
     public void setNext(Component nextComponent) {
@@ -45,6 +50,10 @@ public abstract class Component {
 
     public void showPropertiesDialog() {
         flowProperties.inputFlowPropertyValues();
+    }
+
+    public double getFlow() {
+        return flowProperties.getFlow();
     }
 
     public void toggleSelected() {

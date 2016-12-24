@@ -22,8 +22,8 @@ public abstract class ComponentWithImage extends Component {
     }
 
     @Override
-    public boolean isClicked(final int x, final int y) {
-        return calculateCollisionBox().contains(x, y);
+    public boolean isClicked(final Point clickLocation) {
+        return calculateCollisionBox().contains(clickLocation.getX(), clickLocation.getY());
     }
 
     @Override
@@ -69,8 +69,8 @@ public abstract class ComponentWithImage extends Component {
                 image.getWidth(), image.getHeight());
     }
 
-    public void setCenterPosition(int x, int y) {
-        position.setLocation(x, y);
+    public void setCenterPosition(Point center) {
+        position = new Point(center);
     }
 
     public Point getCenterPosition() {

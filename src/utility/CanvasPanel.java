@@ -9,13 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import network.Point;
 import network.Simulation;
-import object.Component;
-import object.ComponentWithImage;
-import network.ComponentFactory;
-import object.Pipe;
 import utility.CursorManager.CursorType;
-
-import java.util.Optional;
 
 /**
  * Responsible for the canvas: drawing, event handling.
@@ -55,16 +49,13 @@ public class CanvasPanel {
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
     }
 
-    private void mousePressed(MouseEvent t) {
-        dragOrigin = new Point((int) t.getX(), (int) t.getY());
+    private void mousePressed(MouseEvent mouseEvent) {
+        dragOrigin = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
         isClick = true;
 
-        if (t.getButton() == MouseButton.PRIMARY
+        if (mouseEvent.getButton() == MouseButton.PRIMARY
                 && CursorManager.getCursorType() == CursorType.PIPE) {
-            Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
-            if (selected.isPresent()) {
-                ComponentFactory.startPipe(selected.get());
-            }
+            simulation.startPlottingPipe(mouseEvent);
         }
 
         redraw();
@@ -85,59 +76,26 @@ public class CanvasPanel {
     }
 
     private void mouseReleased(MouseEvent t) {
-        int cursorX = (int) t.getX();
-        int cursorY = (int) t.getY();
+        Point clickLocation = new Point((int) t.getX(), (int) t.getY());
 
         if (isClick) {
             if (t.getButton() == MouseButton.PRIMARY) {
                 simulation.deselectAll();
 
                 if (CursorManager.getCursorType() == CursorType.POINTER) {
-                    // try to select an object, if found - show properties
-                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
-                    if (selected.isPresent()) {
-                        selected.get().showPropertiesDialog();
-                    }
-                } else if (CursorManager.getCursorType() == CursorType.DELETE) { //move to simulatio
-                    Optional<Component> selected = simulation.getObject(cursorX, cursorY);
-                    if (selected.isPresent()) {
-                        selected.get().setSelected(true);
-                        simulation.deleteSelected();
-                    }
-                } else {// move to simulation
-                    ComponentWithImage created = ComponentFactory.createComponent(
-                            CursorManager.getCursorType());
-                    created.setCenterPosition(cursorX, cursorY);
-
-                    if (simulation.doesOverlap(created)) {
-                        AlertDialog.showInvalidInputAlert(
-                                "This spot overlaps with an existing object.");
-                        return;
-                    }
-                    CursorManager.setCursorType(CursorType.POINTER);
-                    simulation.addComponent(created);
+                    simulation.showLocationProperties(clickLocation);
+                } else if (CursorManager.getCursorType() == CursorType.DELETE) {
+                    simulation.deleteOnLocation(clickLocation);
+                } else {
+                    simulation.createComponentOnLocation(clickLocation);
                 }
-
-            }
-
-            if (t.getButton() == MouseButton.SECONDARY) {
-                Optional<Component> selected = simulation.getObject(cursorX, cursorY);
-                if (selected.isPresent()) {
-                    selected.get().toggleSelected();
-                }
+            } else if (t.getButton() == MouseButton.SECONDARY) {
+                simulation.toggleSelectedOnLocation(clickLocation);
             }
         } else {
             if (t.getButton() == MouseButton.PRIMARY
                     && CursorManager.getCursorType() == CursorType.PIPE) {
-                Optional<Component> selected = simulation.getObject((int) t.getX(), (int) t.getY());
-                if (selected.isPresent()) {
-                    Pipe created = ComponentFactory.finishPipe(selected.get());
-                    if (created != null) {
-                        simulation.addComponent(created);
-                    }
-                } else {
-                    ComponentFactory.stopBuildingPipe();
-                }
+                simulation.finishPipeOnLocation(clickLocation);
             }
         }
         redraw();

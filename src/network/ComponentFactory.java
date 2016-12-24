@@ -22,7 +22,7 @@ public class ComponentFactory {
 
     /**
      * Start building a pipe object by giving it a component to start from.
-     * @param pipeInput
+     * @param pipeInput the component the pipe starts from
      */
     public static void startPipe(Component pipeInput) {
         if (pipeInput instanceof ComponentWithImage) {
@@ -41,7 +41,7 @@ public class ComponentFactory {
 
     /**
      * Finish the building of a pipe by giving the second component to end at.
-     * @param pipeOutput
+     * @param pipeOutput the component the pipe ends on
      * @return a completed pipe
      */
     public static Pipe finishPipe(Component pipeOutput) {

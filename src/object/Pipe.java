@@ -3,6 +3,7 @@ package object;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import network.Join;
+import network.Point;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class Pipe extends Component {
     }
 
     @Override
-    public boolean isClicked(int x, int y) {
+    public boolean isClicked(final Point clickLocation) {
         return false;
     }
 
@@ -29,12 +30,12 @@ public class Pipe extends Component {
     public void draw(GraphicsContext gc) {
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(flowProperties.getCapacity());
-        for (int firstPoint_i = 0; firstPoint_i < joins.size() - 1; firstPoint_i++) {
+        for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
                 gc.strokeLine(
-                        joins.get(firstPoint_i).getX(),
-                        joins.get(firstPoint_i).getY(),
-                        joins.get(firstPoint_i + 1).getX(),
-                        joins.get(firstPoint_i + 1).getY());
+                        joins.get(firstOfPair_i).getX(),
+                        joins.get(firstOfPair_i).getY(),
+                        joins.get(firstOfPair_i + 1).getX(),
+                        joins.get(firstOfPair_i + 1).getY());
         }
     }
 

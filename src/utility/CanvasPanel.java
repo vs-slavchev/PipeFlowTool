@@ -89,6 +89,7 @@ public class CanvasPanel {
                 } else {
                     simulation.createComponentOnLocation(clickLocation);
                 }
+
             } else if (t.getButton() == MouseButton.SECONDARY) {
                 simulation.toggleSelectedOnLocation(clickLocation);
             }

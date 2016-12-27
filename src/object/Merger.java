@@ -15,7 +15,9 @@ public class Merger extends ComponentWithImage {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, position.getX(), position.getY());
+        gc.drawImage(image,
+                calculateCollisionBox().getX(),
+                calculateCollisionBox().getY());
         drawHighlighting(gc);
     }
 }

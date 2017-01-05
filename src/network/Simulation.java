@@ -9,7 +9,9 @@ import utility.AlertDialog;
 import utility.CursorManager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -18,6 +20,7 @@ import java.util.stream.Stream;
 public class Simulation {
 
     private ArrayList<Component> objects = new ArrayList<>();
+    private Set<Component> objectsToRemove = new HashSet<>();
 
     public void addComponent(Component obj) {
         if (!objects.contains(obj)) {
@@ -60,8 +63,19 @@ public class Simulation {
         objects.forEach(obj -> obj.setSelected(false));
     }
 
+    /**
+     * Deletes the selected components
+     * @return true if any components have been deleted
+     */
     public boolean deleteSelected() {
-        return objects.removeIf(Component::isSelected);
+        //return objects.removeIf(Component::isSelected);
+        objects.stream()
+                .filter(Component::isSelected)
+                .forEach(component -> deleteComponentFromSimulation(component));
+
+        boolean anyRemoved = objects.removeAll(objectsToRemove);
+        objectsToRemove.clear();
+        return anyRemoved;
     }
 
     public void startPlottingPipe(MouseEvent event) {
@@ -82,8 +96,22 @@ public class Simulation {
     public void deleteOnLocation(Point clickLocation) {
         Optional<Component> clicked = getObject(clickLocation);
         if (clicked.isPresent()) {
-            objects.remove(clicked.get());
+            deleteComponentFromSimulation(clicked.get());
         }
+    }
+
+    private void deleteComponentFromSimulation(Component toRemove) {
+        //objects.remove(toRemove);
+        objectsToRemove.add(toRemove);
+        // make components having the deleted one as their next one not point at it
+        objects.stream()
+                .filter(component -> component.getNext() == toRemove)
+                .forEach(component -> {
+                    component.setNext(null);
+                    if (component instanceof Pipe) {
+                        deleteComponentFromSimulation(component);
+                    }
+                });
     }
 
     public void createComponentOnLocation(Point clickLocation) {

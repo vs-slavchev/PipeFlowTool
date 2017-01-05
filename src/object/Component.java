@@ -46,8 +46,15 @@ public abstract class Component {
         }
     }
 
+    public Component getNext() {
+        return next;
+    }
+
     public void setNext(Component nextComponent) {
-        this.next = nextComponent;
+
+        if (this != nextComponent && !(nextComponent instanceof Pump)) {
+            this.next = nextComponent;
+        }
     }
 
     public void showPropertiesDialog() {

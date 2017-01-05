@@ -11,4 +11,10 @@ public class Sink extends ComponentWithImage {
         // intentionally left empty
     }
 
+    /* Don't update the next component as this is a sink. */
+    @Override
+    public void showPropertiesDialog() {
+        flowProperties.inputFlowPropertyValues();
+    }
+
 }

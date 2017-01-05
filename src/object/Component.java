@@ -41,7 +41,9 @@ public abstract class Component {
      */
     public void update(double previousFlow) {
         flowProperties.setFlow(previousFlow);
-        next.update(previousFlow);
+        if (next != null) {
+            next.update(previousFlow);
+        }
     }
 
     public void setNext(Component nextComponent) {
@@ -50,6 +52,7 @@ public abstract class Component {
 
     public void showPropertiesDialog() {
         flowProperties.inputFlowPropertyValues();
+        update(flowProperties.getFlow());
     }
 
     public double getFlow() {

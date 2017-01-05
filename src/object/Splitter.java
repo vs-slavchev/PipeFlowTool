@@ -13,11 +13,11 @@ public class Splitter extends ComponentWithImage {
         // TODO: show slider for percent
     }
 
-    @Override
+    /*@Override
     public void draw(GraphicsContext gc) {
         gc.drawImage(image,
                 calculateCollisionBox().getX(),
                 calculateCollisionBox().getY());
         drawHighlighting(gc);
-    }
+    }*/
 }

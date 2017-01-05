@@ -71,7 +71,7 @@ public class Simulation {
         }
     }
 
-    public void showLocationProperties(Point clickLocation) {
+    public void showPropertiesOnLocation(Point clickLocation) {
         // try to select an object, if found - show properties
         Optional<Component> clicked = getObject(clickLocation);
         if (clicked.isPresent()) {

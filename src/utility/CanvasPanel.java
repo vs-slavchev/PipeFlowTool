@@ -83,7 +83,7 @@ public class CanvasPanel {
                 simulation.deselectAll();
 
                 if (CursorManager.getCursorType() == CursorType.POINTER) {
-                    simulation.showLocationProperties(clickLocation);
+                    simulation.showPropertiesOnLocation(clickLocation);
                 } else if (CursorManager.getCursorType() == CursorType.DELETE) {
                     simulation.deleteOnLocation(clickLocation);
                 } else {

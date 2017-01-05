@@ -13,11 +13,11 @@ public class Merger extends ComponentWithImage {
         // intentionally left empty
     }
 
-    @Override
+    /*@Override
     public void draw(GraphicsContext gc) {
         gc.drawImage(image,
                 calculateCollisionBox().getX(),
                 calculateCollisionBox().getY());
         drawHighlighting(gc);
-    }
+    }*/
 }

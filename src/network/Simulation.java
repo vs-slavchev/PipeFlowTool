@@ -1,6 +1,7 @@
 package network;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import object.Component;
 import object.ComponentWithImage;
@@ -68,7 +69,6 @@ public class Simulation {
      * @return true if any components have been deleted
      */
     public boolean deleteSelected() {
-        //return objects.removeIf(Component::isSelected);
         objects.stream()
                 .filter(Component::isSelected)
                 .forEach(component -> deleteComponentFromSimulation(component));
@@ -98,10 +98,12 @@ public class Simulation {
         if (clicked.isPresent()) {
             deleteComponentFromSimulation(clicked.get());
         }
+
+        objects.removeAll(objectsToRemove);
+        objectsToRemove.clear();
     }
 
     private void deleteComponentFromSimulation(Component toRemove) {
-        //objects.remove(toRemove);
         objectsToRemove.add(toRemove);
         // make components having the deleted one as their next one not point at it
         objects.stream()

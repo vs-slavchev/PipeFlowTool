@@ -107,7 +107,8 @@ public class Simulation {
         objectsToRemove.add(toRemove);
         // make components having the deleted one as their next one not point at it
         objects.stream()
-                .filter(component -> component.getNext() == toRemove)
+                .filter(component -> component.getNext() == toRemove
+                            || toRemove.getNext() == component)
                 .forEach(component -> {
                     component.setNext(null);
                     if (component instanceof Pipe) {

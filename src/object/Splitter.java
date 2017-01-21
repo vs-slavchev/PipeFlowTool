@@ -4,6 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Splitter extends ComponentWithImage {
 
+    protected Component secondNext;
+
     public Splitter() {
         super("splitter64");
     }

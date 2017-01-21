@@ -13,6 +13,7 @@ public class Merger extends ComponentWithImage {
         // intentionally left empty
     }
 
+    // TODO: uncomment
     /*@Override
     public void draw(GraphicsContext gc) {
         gc.drawImage(image,

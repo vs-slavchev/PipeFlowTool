@@ -15,6 +15,7 @@ public class Splitter extends ComponentWithImage {
         // TODO: show slider for percent
     }
 
+    // TODO: uncomment
     /*@Override
     public void draw(GraphicsContext gc) {
         gc.drawImage(image,

@@ -1,9 +1,6 @@
 package object;
 
-import javafx.scene.canvas.GraphicsContext;
 import network.Simulation;
-
-import java.util.stream.Stream;
 
 public class Merger extends ComponentWithImage {
 
@@ -32,13 +29,4 @@ public class Merger extends ComponentWithImage {
                 .sum();
         super.update(flowsSum);
     }
-
-    // TODO: uncomment
-    /*@Override
-    public void draw(GraphicsContext gc) {
-        gc.drawImage(image,
-                calculateCollisionBox().getX(),
-                calculateCollisionBox().getY());
-        drawHighlighting(gc);
-    }*/
 }

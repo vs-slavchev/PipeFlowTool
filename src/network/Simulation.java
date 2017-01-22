@@ -5,7 +5,6 @@ import javafx.scene.input.MouseEvent;
 import object.Component;
 import object.ComponentWithImage;
 import object.Pipe;
-import object.Pump;
 import utility.AlertDialog;
 import utility.CursorManager;
 
@@ -154,10 +153,6 @@ public class Simulation {
         } else {
             factory.stopBuildingPipe();
         }
-    }
-
-    public ArrayList<Component> getObjects() {
-        return objects;
     }
 
     public Stream<Component> getPipesPointingToComponent(Component pointedTo) {

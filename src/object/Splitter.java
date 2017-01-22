@@ -1,6 +1,5 @@
 package object;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextInputDialog;
 import utility.AlertDialog;
 
@@ -53,7 +52,6 @@ public class Splitter extends ComponentWithImage {
 
     @Override
     public void setNext(Component nextComponent) {
-
         if (this != nextComponent && !(nextComponent instanceof Pump)) {
             if (next == null) {
                 next = nextComponent;
@@ -61,14 +59,9 @@ public class Splitter extends ComponentWithImage {
                 secondNext = nextComponent;
             }
         }
+        // nulling on purpose
+        if (nextComponent == null) {
+            next = secondNext = null;
+        }
     }
-
-    // TODO: uncomment
-    /*@Override
-    public void draw(GraphicsContext gc) {
-        gc.drawImage(image,
-                calculateCollisionBox().getX(),
-                calculateCollisionBox().getY());
-        drawHighlighting(gc);
-    }*/
 }

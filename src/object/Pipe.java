@@ -2,18 +2,18 @@ package object;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import network.Join;
 import network.Point;
+import utility.Values;
 
 import java.util.ArrayList;
 
 public class Pipe extends Component {
 
-    private ArrayList<Join> joins = new ArrayList<>();
+    private ArrayList<Point> joins = new ArrayList<>();
     private Component input;
 
     public void addJoin(ComponentWithImage component) {
-        joins.add(new Join(component.getCenterPosition()));
+        joins.add(component.getCenterPosition());
     }
 
     @Override
@@ -43,18 +43,48 @@ public class Pipe extends Component {
         } else {
             gc.setStroke(Color.RED); // 100%
         }
+
         double flowToRepresent = Math.min(flowProperties.getFlow(), flowProperties.getCapacity());
         gc.setLineWidth(flowToRepresent*2);
         drawLinesOfPipe(gc);
+
+        gc.setStroke(Color.BLUE);
+        gc.setLineWidth(5);
+        drawArrowheads(gc);
     }
 
     private void drawLinesOfPipe(GraphicsContext gc) {
         for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
-                gc.strokeLine(
-                        joins.get(firstOfPair_i).getX(),
-                        joins.get(firstOfPair_i).getY(),
-                        joins.get(firstOfPair_i + 1).getX(),
-                        joins.get(firstOfPair_i + 1).getY());
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
+            Point firstOfPair = joins.get(firstOfPair_i);
+
+            gc.strokeLine(
+                    firstOfPair.getX(),
+                    firstOfPair.getY(),
+                    secondOfPair.getX(),
+                    secondOfPair.getY());
+        }
+    }
+
+    private void drawArrowheads(GraphicsContext gc) {
+        for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
+            Point firstOfPair = joins.get(firstOfPair_i);
+
+            Point arrowPeak = Values.cuttingPoint(firstOfPair, secondOfPair,
+                    Values.MAX_DISTANCE_ARROW);
+            if (Values.distance(firstOfPair, arrowPeak) > 5) {
+                Point initialWing = Values.cuttingPoint(firstOfPair, arrowPeak,
+                        Values.ARROW_WING_LENGTH);
+                Point leftWing = Values.rotatePoint(initialWing, Values.WING_ANGLE, arrowPeak);
+                Point rightWing = Values.rotatePoint(initialWing, -Values.WING_ANGLE, arrowPeak);
+
+                // draw the wings of the arrow
+                gc.strokeLine(arrowPeak.getX(), arrowPeak.getY(),
+                        leftWing.getX(), leftWing.getY());
+                gc.strokeLine(arrowPeak.getX(), arrowPeak.getY(),
+                        rightWing.getX(), rightWing.getY());
+            }
         }
     }
 

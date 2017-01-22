@@ -2,6 +2,9 @@ package utility;
 
 import network.Point;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class Values {
     public static final int DEFAULT_FLOW_INPUT = 10;
 
@@ -11,6 +14,8 @@ public class Values {
 
     public static final int MAX_DISTANCE_ARROW =
             (int) Math.ceil(distance(new Point(0, 0), new Point(32, 32)));
+    public static final int ARROW_WING_LENGTH = 30;
+    public static final int WING_ANGLE = 30;
 
     /**
      * Calculates the distance between 2 points in 2D space.
@@ -39,5 +44,20 @@ public class Values {
                 * (end.getY() - origin.getY())
                 / distance(origin, end);
         return new Point((int) cuttingX, (int) cuttingY);
+    }
+
+    /**
+     * Rotates a point around another point.
+     * @param toRotate the point to rotate
+     * @param angle the angle of rotation
+     * @param pivot the pivot point to rotate around
+     * @return the new location point
+     */
+    public static Point rotatePoint(Point toRotate, float angle, Point pivot){
+        return new Point(
+                (int) (cos(angle) * (pivot.getX() - toRotate.getX())
+                        - sin(angle) * (pivot.getY() - toRotate.getY()) + toRotate.getX()),
+                (int) (sin(angle) * (pivot.getX() - toRotate.getX())
+                        + cos(angle) * (pivot.getY() - toRotate.getY()) + toRotate.getY()));
     }
 }

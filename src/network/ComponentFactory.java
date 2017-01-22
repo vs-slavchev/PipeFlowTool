@@ -5,14 +5,19 @@ import utility.CursorManager.CursorType;
 
 public class ComponentFactory {
 
-    private static Pipe notFinished;
+    private final Simulation simulation;
+    private Pipe notFinished;
 
-    public static ComponentWithImage createComponent(CursorType selected) {
+    public ComponentFactory(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
+    public ComponentWithImage createComponent(CursorType selected) {
         switch (selected) {
             case SPLITTER:
                 return new Splitter();
             case MERGER:
-                return new Merger();
+                return new Merger(simulation);
             case SINK:
                 return new Sink();
             default:
@@ -24,7 +29,7 @@ public class ComponentFactory {
      * Start building a pipe object by giving it a component to start from.
      * @param pipeInput the component the pipe starts from
      */
-    public static void startPipe(Component pipeInput) {
+    public void startPipe(Component pipeInput) {
         if (pipeInput instanceof ComponentWithImage) {
             notFinished = new Pipe();
             notFinished.addJoin((ComponentWithImage)pipeInput);
@@ -35,7 +40,7 @@ public class ComponentFactory {
     /**
      * Abandon the pipe that is currently being built.
      */
-    public static void stopBuildingPipe() {
+    public void stopBuildingPipe() {
         notFinished = null;
     }
 
@@ -44,7 +49,7 @@ public class ComponentFactory {
      * @param pipeOutput the component the pipe ends on
      * @return a completed pipe
      */
-    public static Pipe finishPipe(Component pipeOutput) {
+    public Pipe finishPipe(Component pipeOutput) {
         if (pipeOutput instanceof ComponentWithImage
                 && notFinished != null
                 && notFinished.getInput() != pipeOutput) {

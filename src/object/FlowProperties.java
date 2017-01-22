@@ -98,6 +98,6 @@ public class FlowProperties {
 
     @Override
     public String toString() {
-        return flow + "/" + capacity;
+        return (flow % 1 == 0 ? Integer.toString((int)flow) : flow) + "/" + capacity;
     }
 }

@@ -1,11 +1,11 @@
 package network;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import object.Component;
 import object.ComponentWithImage;
 import object.Pipe;
+import object.Pump;
 import utility.AlertDialog;
 import utility.CursorManager;
 
@@ -22,6 +22,8 @@ public class Simulation {
 
     private ArrayList<Component> objects = new ArrayList<>();
     private Set<Component> objectsToRemove = new HashSet<>();
+
+    private ComponentFactory factory = new ComponentFactory(this);
 
     public void addComponent(Component obj) {
         if (!objects.contains(obj)) {
@@ -81,7 +83,7 @@ public class Simulation {
     public void startPlottingPipe(MouseEvent event) {
         Optional<Component> selected = getObject(new Point((int) event.getX(), (int) event.getY()));
         if (selected.isPresent()) {
-            ComponentFactory.startPipe(selected.get());
+            factory.startPipe(selected.get());
         }
     }
 
@@ -118,7 +120,7 @@ public class Simulation {
     }
 
     public void createComponentOnLocation(Point clickLocation) {
-        ComponentWithImage created = ComponentFactory.createComponent(
+        ComponentWithImage created = factory.createComponent(
                 CursorManager.getCursorType());
         created.setCenterPosition(clickLocation);
 
@@ -143,12 +145,23 @@ public class Simulation {
     public void finishPipeOnLocation(Point clickLocation) {
         Optional<Component> clicked = getObject(clickLocation);
         if (clicked.isPresent()) {
-            Pipe created = ComponentFactory.finishPipe(clicked.get());
+            Pipe created = factory.finishPipe(clicked.get());
             if (created != null) {
                 addComponent(created);
+                // start update to represent current values
+                created.getInput().update(created.getInput().getFlow());
             }
         } else {
-            ComponentFactory.stopBuildingPipe();
+            factory.stopBuildingPipe();
         }
+    }
+
+    public ArrayList<Component> getObjects() {
+        return objects;
+    }
+
+    public Stream<Component> getPipesPointingToComponent(Component pointedTo) {
+        return objects.stream()
+                .filter(pipe -> pipe.getNext() == pointedTo);
     }
 }

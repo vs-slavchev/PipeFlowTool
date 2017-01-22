@@ -1,5 +1,10 @@
 package object;
 
+import javafx.scene.control.TextInputDialog;
+import utility.AlertDialog;
+
+import java.util.Optional;
+
 public class Sink extends ComponentWithImage {
 
     public Sink() {
@@ -14,7 +19,23 @@ public class Sink extends ComponentWithImage {
     /* Don't update the next component as this is a sink. */
     @Override
     public void showPropertiesDialog() {
-        flowProperties.inputFlowPropertyValues();
+        TextInputDialog dialog = new TextInputDialog("10");
+        dialog.setTitle("Properties");
+        dialog.setHeaderText("Specify the capacity:");
+        dialog.setContentText("capacity:");
+
+        Optional<String> result = dialog.showAndWait();
+        String input = result.orElse("10");
+
+        int capacityValue = 0;
+        try {
+            capacityValue = Integer.parseInt(input);
+        } catch (NumberFormatException nfe) {
+            AlertDialog.showInvalidInputAlert("The value was not a number.\n" +
+                    "Default value is assigned.");
+        } finally {
+            flowProperties.setCapacity(capacityValue);
+        }
     }
 
 }

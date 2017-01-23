@@ -10,17 +10,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import network.Simulation;
 import utility.CanvasPanel;
 import utility.CursorManager;
 import utility.CursorManager.CursorType;
 import utility.Values;
 
-import java.io.File;
+import java.io.*;
+import java.util.Optional;
 
 public class PipeFlowTool extends Application {
 
     private HBox buttonBar;
     private CanvasPanel canvasPanel;
+    private VBox root;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,12 +33,12 @@ public class PipeFlowTool extends Application {
     public void start(Stage primaryStage) {
         ImageManager.initializeImages();
 
-        VBox root = new VBox();
+        root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
 
         setUpButtonBar(primaryStage);
-        root.getChildren().addAll(buttonBar, setUpCanvas(root));
+        root.getChildren().addAll(buttonBar, setUpCanvas(root, null));
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Pipe Flow Tool");
@@ -110,9 +113,15 @@ public class PipeFlowTool extends Application {
         }
     }
 
-    private Canvas setUpCanvas(VBox root) {
+    private Canvas setUpCanvas(VBox root, Simulation sim) {
         Canvas canvas = new Canvas();
-        canvasPanel = new CanvasPanel(canvas);
+
+        if(sim != null){
+            canvasPanel = new CanvasPanel(canvas, sim);
+        }else{
+            canvasPanel = new CanvasPanel(canvas);
+        }
+
 
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
@@ -125,8 +134,19 @@ public class PipeFlowTool extends Application {
         FileChooser fileChooser = new FileChooser();
         configureFileChooser(fileChooser);
         File file = fileChooser.showOpenDialog(primaryStage);
+        //<-----------------------------Breakpoint here
         if (file != null) {
-            //openFile(file); // TODO: implement method
+            try {
+                FileInputStream inputStream = new FileInputStream(file.getPath());
+                ObjectInputStream ois = new ObjectInputStream(inputStream);
+                Simulation sim = (Simulation) ois.readObject();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -135,11 +155,13 @@ public class PipeFlowTool extends Application {
         fileChooser.setTitle("Save File");
         File file = fileChooser.showSaveDialog(primaryStage);
         if (file != null) {
-            /*try {
-                // TODO: write and save to file
+            try {
+                FileOutputStream streamOut = new FileOutputStream(file.getPath());
+                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
+                oos.writeObject(this.canvasPanel.getSimulation());
             } catch (IOException ex) {
-
-            }*/
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -147,7 +169,7 @@ public class PipeFlowTool extends Application {
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("JPG", "*.jpg") // TODO: fix extension
+                new FileChooser.ExtensionFilter("SIM", "*.sim")
         );
     }
 }

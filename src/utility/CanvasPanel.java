@@ -26,6 +26,14 @@ public class CanvasPanel {
     private Point dragOrigin;
     private boolean isClick;
 
+    public Simulation getSimulation(){
+        return this.simulation;
+    }
+
+    public void setSimulation(Simulation sim){
+        this.simulation = sim;
+    }
+
     public CanvasPanel(Canvas canvas) {
         this.canvas = canvas;
         graphicsContext = canvas.getGraphicsContext2D();
@@ -34,6 +42,16 @@ public class CanvasPanel {
         addEventHandlers();
 
         simulation = new Simulation();
+    }
+
+    public CanvasPanel(Canvas canvas, Simulation sim) {
+        this.canvas = canvas;
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setTextBaseline(VPos.CENTER);
+        addEventHandlers();
+
+        simulation = sim;
     }
 
     /**

@@ -3,11 +3,13 @@ package object;
 import javafx.scene.canvas.GraphicsContext;
 import network.Point;
 
+import java.io.Serializable;
+
 /**
  * The base of an object of the network.
  */
-public abstract class Component {
-
+public abstract class Component implements Serializable{
+    private static final long serialVersionUID = -2724135797181166853L;
     protected FlowProperties flowProperties;
     protected boolean selected;
     protected Component next;

@@ -8,11 +8,13 @@ import javafx.scene.shape.Rectangle;
 import network.Point;
 import utility.Values;
 
+import java.io.Serializable;
+
 /**
  * A component that is represented by an image. The collision box depends on the image size.
  */
-public abstract class ComponentWithImage extends Component {
-
+public abstract class ComponentWithImage extends Component implements Serializable{
+    private static final long serialVersionUID = -2724135797181166853L;
     protected Point position;
     protected Image image;
 

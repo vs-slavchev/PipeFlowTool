@@ -19,11 +19,12 @@ import java.util.stream.Stream;
  * Manages all the objects in the network.
  */
 public class Simulation implements java.io.Serializable{
-
+    private static final long serialVersionUID = -2724135797181166853L;
     private ArrayList<Component> objects = new ArrayList<>();
     private Set<Component> objectsToRemove = new HashSet<>();
 
-    private ComponentFactory factory = new ComponentFactory(this);
+
+    private transient ComponentFactory factory = new ComponentFactory(this);
 
     public void addComponent(Component obj) {
         if (!objects.contains(obj)) {

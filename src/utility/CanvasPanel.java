@@ -11,6 +11,8 @@ import network.Point;
 import network.Simulation;
 import utility.CursorManager.CursorType;
 
+import java.util.Optional;
+
 /**
  * Responsible for the canvas: drawing, event handling.
  */
@@ -39,6 +41,16 @@ public class CanvasPanel {
         addEventHandlers();
 
         simulation = new Simulation();
+    }
+
+    public CanvasPanel(Canvas canvas, Simulation sim) {
+        this.canvas = canvas;
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setTextBaseline(VPos.CENTER);
+        addEventHandlers();
+
+        simulation = sim;
     }
 
     /**

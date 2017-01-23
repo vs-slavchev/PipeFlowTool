@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 public class Splitter extends ComponentWithImage implements Serializable{
-
+    private static final long serialVersionUID = -2724135797181166853L;
     private Component secondNext;
     private int splitPercent = 50;
 

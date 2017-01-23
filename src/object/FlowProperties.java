@@ -6,14 +6,15 @@ import javafx.scene.paint.Color;
 import utility.AlertDialog;
 import utility.Values;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * A component to be used in objects which have flow and capacity.
  * Also responsible for showing input dialog and validating input.
  */
-public class FlowProperties {
-
+public class FlowProperties implements Serializable{
+    private static final long serialVersionUID = -2724135797181166853L;
     private double flow;
     private int capacity;
 

@@ -3,8 +3,10 @@ package network;
 import object.*;
 import utility.CursorManager.CursorType;
 
-public class ComponentFactory {
+import java.io.Serializable;
 
+public class ComponentFactory{
+    private static final long serialVersionUID = -2724135797181166853L;
     private final Simulation simulation;
     private Pipe notFinished;
 

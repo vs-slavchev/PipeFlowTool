@@ -5,7 +5,7 @@ import network.Simulation;
 import java.io.Serializable;
 
 public class Merger extends ComponentWithImage implements Serializable{
-
+    private static final long serialVersionUID = -2724135797181166853L;
     private final Simulation simulation;
 
     public Merger(Simulation simulation) {

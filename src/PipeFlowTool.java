@@ -17,16 +17,24 @@ import utility.CursorManager.CursorType;
 import utility.Values;
 
 import java.io.*;
-import java.util.Optional;
 
 public class PipeFlowTool extends Application {
 
     private HBox buttonBar;
     private CanvasPanel canvasPanel;
     private VBox root;
+    private String filePath = "";
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private static void configureFileChooser(final FileChooser fileChooser) {
+        fileChooser.setTitle("Open file");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("SIM", "*.sim")
+        );
     }
 
     @Override
@@ -66,9 +74,9 @@ public class PipeFlowTool extends Application {
         fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
 
         // assign action handlers to the items in the file menu
-        newItem.setOnAction(e -> {/*TODO: clear everything and warn if not saved*/});
+        newItem.setOnAction(e -> newFile());
         openItem.setOnAction(e -> openFile(primaryStage));
-        saveItem.setOnAction(e -> {/*TODO: overwrite with saveAs method by knowing the filename*/});
+        saveItem.setOnAction(e -> saveFile());
         saveAsItem.setOnAction(e -> saveFileAs(primaryStage));
 
         setUpButtons(fileMenuButton);
@@ -116,18 +124,22 @@ public class PipeFlowTool extends Application {
     private Canvas setUpCanvas(VBox root, Simulation sim) {
         Canvas canvas = new Canvas();
 
-        if(sim != null){
+        if (sim != null) {
             canvasPanel = new CanvasPanel(canvas, sim);
-        }else{
+        } else {
             canvasPanel = new CanvasPanel(canvas);
         }
-
 
         canvas.widthProperty().bind(root.widthProperty());
         canvas.heightProperty().bind(root.heightProperty());
         canvas.widthProperty().addListener(observable -> canvasPanel.redraw());
         canvas.heightProperty().addListener(observable -> canvasPanel.redraw());
         return canvas;
+    }
+
+    private void newFile() {
+        this.canvasPanel.setSimulation(new Simulation());
+        filePath = "";
     }
 
     private void openFile(Stage primaryStage) {
@@ -141,13 +153,22 @@ public class PipeFlowTool extends Application {
                 ObjectInputStream ois = new ObjectInputStream(inputStream);
                 Simulation sim = (Simulation) ois.readObject();
                 canvasPanel.setSimulation(sim);
+                filePath = file.getPath();
 
-            } catch (FileNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e){
-                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveFile() {
+        if (filePath != "") {
+            try {
+                FileOutputStream streamOut = new FileOutputStream(filePath);
+                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
+                oos.writeObject(this.canvasPanel.getSimulation());
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -161,17 +182,10 @@ public class PipeFlowTool extends Application {
                 FileOutputStream streamOut = new FileOutputStream(file.getPath());
                 ObjectOutputStream oos = new ObjectOutputStream(streamOut);
                 oos.writeObject(this.canvasPanel.getSimulation());
+                filePath = file.getPath();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-    }
-
-    private static void configureFileChooser(final FileChooser fileChooser) {
-        fileChooser.setTitle("Open file");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("SIM", "*.sim")
-        );
     }
 }

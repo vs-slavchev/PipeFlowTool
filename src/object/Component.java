@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * The base of an object of the network.
  */
-public abstract class Component implements Serializable{
+public abstract class Component implements Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     protected FlowProperties flowProperties;
     protected boolean selected;
@@ -25,6 +25,7 @@ public abstract class Component implements Serializable{
 
     /**
      * Check if the current component overlaps another one.
+     *
      * @param other the component to be checked against
      */
     public abstract boolean overlaps(Component other);
@@ -33,12 +34,15 @@ public abstract class Component implements Serializable{
 
     /**
      * Move the component a certain amount of distance from its current position.
+     *
      * @param dx distance to move over X axis
      * @param dy distance to move over Y axis
      */
     public abstract void translate(int dx, int dy);
 
-    /** Set the flow of the next component accordingly.
+    /**
+     * Set the flow of the next component accordingly.
+     *
      * @param previousFlow the flow of the previous component
      */
     public void update(double previousFlow) {

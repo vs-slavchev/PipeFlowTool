@@ -26,14 +26,6 @@ public class CanvasPanel {
     private Point dragOrigin;
     private boolean isClick;
 
-    public Simulation getSimulation(){
-        return this.simulation;
-    }
-
-    public void setSimulation(Simulation sim){
-        this.simulation = sim;
-    }
-
     public CanvasPanel(Canvas canvas) {
         this.canvas = canvas;
         graphicsContext = canvas.getGraphicsContext2D();
@@ -42,6 +34,7 @@ public class CanvasPanel {
         addEventHandlers();
 
         simulation = new Simulation();
+        simulation.setUpFactory();
     }
 
     public CanvasPanel(Canvas canvas, Simulation sim) {
@@ -52,6 +45,16 @@ public class CanvasPanel {
         addEventHandlers();
 
         simulation = sim;
+    }
+
+    public Simulation getSimulation() {
+        return this.simulation;
+    }
+
+    public void setSimulation(Simulation sim) {
+        this.simulation = sim;
+        this.simulation.setUpFactory();
+        redraw();
     }
 
     /**
@@ -76,7 +79,7 @@ public class CanvasPanel {
 
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             if (CursorManager.getCursorType() == CursorType.PIPE) {
-                if (!simulation.startPlottingPipe(mouseEvent)){
+                if (!simulation.startPlottingPipe(mouseEvent)) {
                     simulation.addPipeJoin(dragOrigin);
                 }
             } else if (CursorManager.getCursorType() == CursorType.POINTER) {
@@ -117,7 +120,8 @@ public class CanvasPanel {
                     simulation.showPropertiesOnLocation(clickLocation);
                 } else if (CursorManager.getCursorType() == CursorType.DELETE) {
                     simulation.deleteOnLocation(clickLocation);
-                } else { // cursor is component type
+                } else if (CursorManager.getCursorType() != CursorType.PIPE) {
+                    // cursor is a component type
                     simulation.createComponentOnLocation(clickLocation);
                 }
 

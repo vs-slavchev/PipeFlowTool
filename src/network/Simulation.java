@@ -8,7 +8,6 @@ import object.Pipe;
 import utility.AlertDialog;
 import utility.CursorManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -18,13 +17,15 @@ import java.util.stream.Stream;
 /**
  * Manages all the objects in the network.
  */
-public class Simulation implements java.io.Serializable{
+public class Simulation implements java.io.Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     private ArrayList<Component> objects = new ArrayList<>();
     private Set<Component> objectsToRemove = new HashSet<>();
+    private transient ComponentFactory factory;
 
-
-    private transient ComponentFactory factory = new ComponentFactory(this);
+    public void setUpFactory() {
+        this.factory = new ComponentFactory(this);
+    }
 
     public void addComponent(Component obj) {
         if (!objects.contains(obj)) {
@@ -57,6 +58,7 @@ public class Simulation implements java.io.Serializable{
 
     /**
      * Checks if the supplied component overlaps with another object.
+     *
      * @param componentToTest the component to be tested
      */
     public boolean doesOverlap(ComponentWithImage componentToTest) {
@@ -69,6 +71,7 @@ public class Simulation implements java.io.Serializable{
 
     /**
      * Deletes the selected components
+     *
      * @return true if any components have been deleted
      */
     public boolean deleteSelected() {
@@ -83,6 +86,7 @@ public class Simulation implements java.io.Serializable{
 
     /**
      * Start the pipe by giving it the start position
+     *
      * @return successful
      */
     public boolean startPlottingPipe(MouseEvent event) {
@@ -116,6 +120,7 @@ public class Simulation implements java.io.Serializable{
 
     /**
      * Delete a specific component from the simulation.
+     *
      * @param toRemove the component to remove
      */
     private void deleteComponentFromSimulation(Component toRemove) {
@@ -123,7 +128,7 @@ public class Simulation implements java.io.Serializable{
         // make components having the deleted one as their next one not point at it
         objects.stream()
                 .filter(component -> component.getNext() == toRemove
-                            || toRemove.getNext() == component)
+                        || toRemove.getNext() == component)
                 .forEach(component -> {
                     component.setNext(null);
                     if (component instanceof Pipe) {
@@ -158,8 +163,7 @@ public class Simulation implements java.io.Serializable{
         if (clicked.isPresent()) {
             Pipe created = factory.finishPipe(clicked.get());
 
-            if (created != null && objects.stream()
-                    .noneMatch(component -> created.overlaps(component))) {
+            if (created != null) {
                 addComponent(created);
                 // start update to represent current values
                 created.getInput().update(created.getInput().getFlow());
@@ -182,7 +186,7 @@ public class Simulation implements java.io.Serializable{
      * Try to add a join to a pipe.
      */
     public void addPipeJoin(Point clickLocation) {
-        Optional<Component > component = getObject(clickLocation);
+        Optional<Component> component = getObject(clickLocation);
         if (component.isPresent() && component.get() instanceof Pipe) {
             Pipe pipe = (Pipe) component.get();
             pipe.addJoin(clickLocation);

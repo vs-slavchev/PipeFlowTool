@@ -11,8 +11,6 @@ import javafx.scene.image.Image;
  */
 public class CursorManager {
 
-    public enum CursorType {POINTER, DELETE, PIPE, PUMP, SPLITTER, MERGER, SINK}
-
     private static CursorType cursorType = CursorType.POINTER;
     private static Scene scene;
 
@@ -20,23 +18,18 @@ public class CursorManager {
         CursorManager.scene = scene;
     }
 
-    public static void setCursorType(CursorType cursorType) {
-        CursorManager.cursorType = cursorType;
-        scene.setCursor(createCursorImage());
-    }
-
     /**
-     * Returns the correct image for the cursor depending on the cursor type.
+     * Returns the correct imageName for the cursor depending on the cursor type.
+     *
      * @return
      */
     public static Cursor createCursorImage() {
         String imageSize;
         if (cursorType == CursorType.POINTER) {
             return new ImageCursor();
-        }else if (cursorType == CursorType.PIPE) {
+        } else if (cursorType == CursorType.PIPE) {
             return Cursor.CROSSHAIR;
-        }
-        else if (cursorType == CursorType.DELETE) {
+        } else if (cursorType == CursorType.DELETE) {
             imageSize = "32";
         } else {
             imageSize = "64";
@@ -52,4 +45,11 @@ public class CursorManager {
     public static CursorType getCursorType() {
         return cursorType;
     }
+
+    public static void setCursorType(CursorType cursorType) {
+        CursorManager.cursorType = cursorType;
+        scene.setCursor(createCursorImage());
+    }
+
+    public enum CursorType {POINTER, DELETE, PIPE, PUMP, SPLITTER, MERGER, SINK}
 }

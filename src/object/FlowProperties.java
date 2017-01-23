@@ -13,13 +13,14 @@ import java.util.Optional;
  * A component to be used in objects which have flow and capacity.
  * Also responsible for showing input dialog and validating input.
  */
-public class FlowProperties implements Serializable{
+public class FlowProperties implements Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     private double flow;
     private int capacity;
 
     public FlowProperties() {
-        flow = capacity = Values.DEFAULT_FLOW_INPUT;
+        flow = 0;
+        capacity = Values.DEFAULT_FLOW_INPUT;
     }
 
     /**
@@ -79,20 +80,20 @@ public class FlowProperties implements Serializable{
         }
     }
 
-    public void setFlow(final double flow) {
-        this.flow = Math.max(flow, 0);
-    }
-
-    public void setCapacity(final int capacity) {
-        this.capacity = Math.max(capacity, 0);
-    }
-
     public double getFlow() {
         return flow;
     }
 
+    public void setFlow(final double flow) {
+        this.flow = Math.max(flow, 0);
+    }
+
     public int getCapacity() {
         return capacity;
+    }
+
+    public void setCapacity(final int capacity) {
+        this.capacity = Math.max(capacity, 0);
     }
 
     /**
@@ -119,6 +120,6 @@ public class FlowProperties implements Serializable{
 
     @Override
     public String toString() {
-        return (flow % 1 == 0 ? Integer.toString((int)flow) : flow) + "/" + capacity;
+        return (flow % 1 == 0 ? Integer.toString((int) flow) : flow) + "/" + capacity;
     }
 }

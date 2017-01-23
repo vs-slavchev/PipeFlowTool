@@ -45,10 +45,10 @@ public class ImageManager {
     }
 
     /**
-     * Get an already loaded image by its name.
+     * Get an already loaded imageName by its name.
      *
-     * @param imageName the name of the image without extension
-     * @return the image
+     * @param imageName the name of the imageName without extension
+     * @return the imageName
      */
     public static Image getImage(String imageName) {
         if (!images.containsKey(imageName)) {

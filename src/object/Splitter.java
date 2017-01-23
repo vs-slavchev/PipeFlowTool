@@ -1,13 +1,16 @@
 package object;
 
+import file.ImageManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.paint.Color;
 import utility.AlertDialog;
+import utility.Values;
 
 import java.io.Serializable;
 import java.util.Optional;
 
-public class Splitter extends ComponentWithImage implements Serializable{
+public class Splitter extends ComponentWithImage implements Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     private Component secondNext;
     private int splitPercent = 50;
@@ -47,7 +50,7 @@ public class Splitter extends ComponentWithImage implements Serializable{
 
     private void performSplitting() {
         if (next != null && secondNext != null) {
-            next.update(flowProperties.getFlow() * splitPercent/100);
+            next.update(flowProperties.getFlow() * splitPercent / 100);
             secondNext.update(flowProperties.getFlow() * (100 - splitPercent) / 100);
         }
     }
@@ -69,9 +72,19 @@ public class Splitter extends ComponentWithImage implements Serializable{
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image,
+        gc.drawImage(ImageManager.getImage(imageName),
                 calculateCollisionBox().getX(),
                 calculateCollisionBox().getY());
         drawHighlighting(gc);
+
+        gc.setFill(Color.PURPLE);
+        gc.fillText(splitPercent + " : " + (100 - splitPercent),
+                position.getX(), position.getY() +
+                (int) ImageManager.getImage(imageName).getHeight() / 2
+                + Values.INFO_VERTICAL_OFFSET);
+    }
+
+    public Component getSecondNext() {
+        return secondNext;
     }
 }

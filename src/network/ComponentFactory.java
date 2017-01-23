@@ -3,10 +3,7 @@ package network;
 import object.*;
 import utility.CursorManager.CursorType;
 
-import java.io.Serializable;
-
-public class ComponentFactory{
-    private static final long serialVersionUID = -2724135797181166853L;
+public class ComponentFactory {
     private final Simulation simulation;
     private Pipe notFinished;
 
@@ -29,13 +26,14 @@ public class ComponentFactory{
 
     /**
      * Start building a pipe object by giving it a component to start from.
+     *
      * @param pipeInput the component the pipe starts from
      * @return successful
      */
     public boolean startPipe(Component pipeInput) {
         if (pipeInput instanceof ComponentWithImage) {
             notFinished = new Pipe();
-            notFinished.addEndpoint((ComponentWithImage)pipeInput);
+            notFinished.addEndpoint((ComponentWithImage) pipeInput);
             notFinished.setInput(pipeInput);
             return true;
         }
@@ -51,14 +49,32 @@ public class ComponentFactory{
 
     /**
      * Finish the building of a pipe by giving the second component to end at.
+     *
      * @param pipeOutput the component the pipe ends on
      * @return a completed pipe
      */
     public Pipe finishPipe(Component pipeOutput) {
+        boolean inputIsSink = notFinished.getInput() instanceof Sink;
+        boolean bothPumps = (notFinished.getInput() instanceof Pump)
+                && (pipeOutput instanceof Pump);
+        boolean bothSinks = inputIsSink
+                && (pipeOutput instanceof Sink);
+        boolean splitterHasNext = notFinished.getInput() instanceof Splitter
+                && ((Splitter) notFinished.getInput()).getSecondNext() != null;
+        boolean pumpHasNext = notFinished.getInput() instanceof Pump
+                && (notFinished.getInput()).getNext() != null;
+        boolean mergerHasNext = notFinished.getInput() instanceof Merger
+                && (notFinished.getInput()).getNext() != null;
+
         if (pipeOutput instanceof ComponentWithImage
                 && notFinished != null
-                && notFinished.getInput() != pipeOutput) {
-            notFinished.addEndpoint((ComponentWithImage)pipeOutput);
+                && notFinished.getInput() != pipeOutput
+                && !bothPumps && !bothSinks
+                && !inputIsSink
+                && !splitterHasNext
+                && !pumpHasNext
+                && !mergerHasNext) {
+            notFinished.addEndpoint((ComponentWithImage) pipeOutput);
             Pipe finished = notFinished;
             notFinished = null;
 

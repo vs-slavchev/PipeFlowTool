@@ -30,8 +30,9 @@ public class Values {
     /**
      * Calculates the coordinates of a point which lies between 2 other points and
      * is a certain amount of distance from the end one.
-     * @param origin of the line
-     * @param end of the line
+     *
+     * @param origin          of the line
+     * @param end             of the line
      * @param distanceFromEnd distance from the end point on the line
      * @return the resulting point on the line
      */
@@ -49,12 +50,13 @@ public class Values {
 
     /**
      * Rotates a point around another point.
+     *
      * @param toRotate the point to rotate
-     * @param angle the angle of rotation
-     * @param pivot the pivot point to rotate around
+     * @param angle    the angle of rotation
+     * @param pivot    the pivot point to rotate around
      * @return the new location point
      */
-    public static Point rotatePoint(Point toRotate, float angle, Point pivot){
+    public static Point rotatePoint(Point toRotate, float angle, Point pivot) {
         return new Point(
                 (int) (cos(angle) * (pivot.getX() - toRotate.getX())
                         - sin(angle) * (pivot.getY() - toRotate.getY()) + toRotate.getX()),
@@ -64,9 +66,10 @@ public class Values {
 
     /**
      * Calculates the distance between a line and a point.
-     * @param first point of the line
+     *
+     * @param first  point of the line
      * @param second point of the line
-     * @param click the point to calculate the distance to
+     * @param click  the point to calculate the distance to
      * @return the distance between the line and the point
      */
     public static double distanceLineToPoint(Point first, Point second, Point click) {
@@ -80,7 +83,7 @@ public class Values {
                 / Math.pow(length, 2);
         projectionPosition = Math.max(0, Math.min(1, projectionPosition));
         return Values.distance(click,
-                new Point((int)(first.getX() + projectionPosition * (second.getX() - first.getX())),
-                        (int)(first.getY() + projectionPosition * (second.getY() - first.getY()))));
+                new Point((int) (first.getX() + projectionPosition * (second.getX() - first.getX())),
+                        (int) (first.getY() + projectionPosition * (second.getY() - first.getY()))));
     }
 }

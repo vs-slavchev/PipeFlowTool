@@ -2,7 +2,9 @@ package utility;
 
 import javafx.scene.control.Alert;
 
-/** Makes showing alert and error messages easier. */
+/**
+ * Makes showing alert and error messages easier.
+ */
 public class AlertDialog {
 
     public static void showFatalError(String errorMessage) {

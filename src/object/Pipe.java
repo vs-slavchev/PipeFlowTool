@@ -4,15 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import network.Point;
 import utility.Values;
-import org.w3c.dom.css.Rect;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pipe extends Component implements Serializable{
+public class Pipe extends Component implements Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     private ArrayList<Point> joins = new ArrayList<>();
     private Component input;
@@ -73,8 +69,10 @@ public class Pipe extends Component implements Serializable{
         }
 
         double flowToRepresent = Math.min(flowProperties.getFlow(), flowProperties.getCapacity());
-        gc.setLineWidth(flowToRepresent*2);
-        drawLinesOfPipe(gc);
+        gc.setLineWidth(flowToRepresent * 2);
+        if (flowToRepresent > 0) {
+            drawLinesOfPipe(gc);
+        }
 
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(5);
@@ -96,8 +94,9 @@ public class Pipe extends Component implements Serializable{
                     secondOfPair.getX(),
                     secondOfPair.getY());
 
-            int width = calculateJointThickness();
-            gc.fillOval(firstOfPair.getX() - width/2, firstOfPair.getY() - width/2,
+            gc.setFill(Color.HOTPINK);
+            int width = calculateJointThickness() + 9;
+            gc.fillOval(firstOfPair.getX() - width / 2, firstOfPair.getY() - width / 2,
                     width, width);
         }
     }
@@ -129,20 +128,8 @@ public class Pipe extends Component implements Serializable{
         flowProperties.showOnlyCapacityInputDialog();
     }
 
-
     @Override
     public boolean overlaps(Component other) {
-        if (!this.equals(other)) {
-            if(other instanceof  Pipe){
-                Pipe o = (Pipe)other;
-                Line2D l1 = new Line2D.Float(joins.get(0).getX(), joins.get(0).getY(),
-                        joins.get(1).getX(), joins.get(1).getY());
-                Line2D l2 = new Line2D.Float(o.joins.get(0).getX(), o.joins.get(0).getY(),
-                        o.joins.get(1).getX(), o.joins.get(1).getY());
-                if( l1.intersectsLine(l2)) JOptionPane.showMessageDialog(null,
-                        "collapse other pipe");
-            }
-        }
         return false;
     }
 

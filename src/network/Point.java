@@ -2,7 +2,7 @@ package network;
 
 import java.io.Serializable;
 
-public class Point implements Serializable{
+public class Point implements Serializable {
     private static final long serialVersionUID = -2724135797181166853L;
     protected int x;
     protected int y;

@@ -19,24 +19,16 @@ public class Pipe extends Component implements Serializable{
 
     @Override
     public boolean isClicked(final Point clickLocation) {
-        /*function sqr(x) { return x * x }
-        function dist2(v, w) { return sqr(v.x - w.x) + sqr(v.y - w.y) }
-        function distToSegmentSquared(p, v, w) {
-            var l2 = dist2(v, w);
-            if (l2 == 0) return dist2(p, v);
-            var t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
-            t = Math.max(0, Math.min(1, t));
-            return dist2(p, { x: v.x + t * (w.x - v.x),
-                    y: v.y + t * (w.y - v.y) });
+        for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
+            Point firstOfPair = joins.get(firstOfPair_i);
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
+
+            // one segment is clicked => the pipe is clicked
+            if (Values.distanceLineToPoint(firstOfPair, secondOfPair, clickLocation)
+                    < Math.max(flowProperties.getCapacity(), 5)) {
+                return true;
+            }
         }
-        function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)); }*/
-        return false;
-    }
-
-
-
-    @Override
-    public boolean overlaps(Component other) {
         return false;
     }
 
@@ -69,8 +61,8 @@ public class Pipe extends Component implements Serializable{
 
     private void drawLinesOfPipe(GraphicsContext gc) {
         for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
-            Point secondOfPair = joins.get(firstOfPair_i + 1);
             Point firstOfPair = joins.get(firstOfPair_i);
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
 
             gc.strokeLine(
                     firstOfPair.getX(),
@@ -82,8 +74,8 @@ public class Pipe extends Component implements Serializable{
 
     private void drawArrowheads(GraphicsContext gc) {
         for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
-            Point secondOfPair = joins.get(firstOfPair_i + 1);
             Point firstOfPair = joins.get(firstOfPair_i);
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
 
             Point arrowPeak = Values.cuttingPoint(firstOfPair, secondOfPair,
                     Values.MAX_DISTANCE_ARROW);
@@ -100,6 +92,16 @@ public class Pipe extends Component implements Serializable{
                         rightWing.getX(), rightWing.getY());
             }
         }
+    }
+
+    @Override
+    public void showPropertiesDialog() {
+        flowProperties.showOnlyCapacityInputDialog();
+    }
+
+    @Override
+    public boolean overlaps(Component other) {
+        return false;
     }
 
     @Override

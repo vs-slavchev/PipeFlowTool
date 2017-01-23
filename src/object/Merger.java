@@ -15,7 +15,7 @@ public class Merger extends ComponentWithImage implements Serializable{
 
     @Override
     public void showPropertiesDialog() {
-        // intentionally left empty
+        flowProperties.showOnlyCapacityInputDialog();
     }
 
     @Override

@@ -2,7 +2,9 @@ package object;
 
 import network.Simulation;
 
-public class Merger extends ComponentWithImage {
+import java.io.Serializable;
+
+public class Merger extends ComponentWithImage implements Serializable{
 
     private final Simulation simulation;
 

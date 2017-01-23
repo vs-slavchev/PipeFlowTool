@@ -8,6 +8,7 @@ import object.Pipe;
 import utility.AlertDialog;
 import utility.CursorManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * Manages all the objects in the network.
  */
-public class Simulation {
+public class Simulation implements java.io.Serializable{
 
     private ArrayList<Component> objects = new ArrayList<>();
     private Set<Component> objectsToRemove = new HashSet<>();

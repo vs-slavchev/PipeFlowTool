@@ -5,9 +5,10 @@ import javafx.scene.paint.Color;
 import network.Point;
 import utility.Values;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pipe extends Component {
+public class Pipe extends Component implements Serializable{
 
     private ArrayList<Point> joins = new ArrayList<>();
     private Component input;

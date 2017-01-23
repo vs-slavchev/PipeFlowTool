@@ -3,9 +3,10 @@ package object;
 import javafx.scene.control.TextInputDialog;
 import utility.AlertDialog;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class Sink extends ComponentWithImage {
+public class Sink extends ComponentWithImage implements Serializable{
 
     public Sink() {
         super("sink64");

@@ -3,9 +3,10 @@ package object;
 import javafx.scene.control.TextInputDialog;
 import utility.AlertDialog;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class Splitter extends ComponentWithImage {
+public class Splitter extends ComponentWithImage implements Serializable{
 
     private Component secondNext;
     private int splitPercent = 50;

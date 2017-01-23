@@ -16,7 +16,7 @@ import java.io.Serializable;
 public abstract class ComponentWithImage extends Component implements Serializable{
     private static final long serialVersionUID = -2724135797181166853L;
     protected Point position;
-    protected Image image;
+    protected transient Image image;
 
     public ComponentWithImage(String imageName) {
         image = ImageManager.getImage(imageName);

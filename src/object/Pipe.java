@@ -4,7 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import network.Point;
 import utility.Values;
+import org.w3c.dom.css.Rect;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -92,8 +96,9 @@ public class Pipe extends Component implements Serializable{
                     secondOfPair.getX(),
                     secondOfPair.getY());
 
-            gc.fillOval(firstOfPair.getX(), firstOfPair.getY(),
-                    calculateJointThickness(), calculateJointThickness());
+            int width = calculateJointThickness();
+            gc.fillOval(firstOfPair.getX() - width/2, firstOfPair.getY() - width/2,
+                    width, width);
         }
     }
 
@@ -124,8 +129,20 @@ public class Pipe extends Component implements Serializable{
         flowProperties.showOnlyCapacityInputDialog();
     }
 
+
     @Override
     public boolean overlaps(Component other) {
+        if (!this.equals(other)) {
+            if(other instanceof  Pipe){
+                Pipe o = (Pipe)other;
+                Line2D l1 = new Line2D.Float(joins.get(0).getX(), joins.get(0).getY(),
+                        joins.get(1).getX(), joins.get(1).getY());
+                Line2D l2 = new Line2D.Float(o.joins.get(0).getX(), o.joins.get(0).getY(),
+                        o.joins.get(1).getX(), o.joins.get(1).getY());
+                if( l1.intersectsLine(l2)) JOptionPane.showMessageDialog(null,
+                        "collapse other pipe");
+            }
+        }
         return false;
     }
 

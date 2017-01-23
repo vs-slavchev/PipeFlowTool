@@ -140,6 +140,8 @@ public class PipeFlowTool extends Application {
                 FileInputStream inputStream = new FileInputStream(file.getPath());
                 ObjectInputStream ois = new ObjectInputStream(inputStream);
                 Simulation sim = (Simulation) ois.readObject();
+                canvasPanel.setSimulation(sim);
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

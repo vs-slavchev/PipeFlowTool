@@ -157,7 +157,9 @@ public class Simulation implements java.io.Serializable{
         Optional<Component> clicked = getObject(clickLocation);
         if (clicked.isPresent()) {
             Pipe created = factory.finishPipe(clicked.get());
-            if (created != null) {
+
+            if (created != null && objects.stream()
+                    .noneMatch(component -> created.overlaps(component))) {
                 addComponent(created);
                 // start update to represent current values
                 created.getInput().update(created.getInput().getFlow());

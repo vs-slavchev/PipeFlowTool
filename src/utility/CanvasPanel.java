@@ -130,6 +130,7 @@ public class CanvasPanel {
                 simulation.finishPipeOnLocation(clickLocation);
             }
         }
+        simulation.deselectAll();
         redraw();
     }
 

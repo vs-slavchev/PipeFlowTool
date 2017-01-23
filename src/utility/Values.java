@@ -60,4 +60,26 @@ public class Values {
                 (int) (sin(angle) * (pivot.getX() - toRotate.getX())
                         + cos(angle) * (pivot.getY() - toRotate.getY()) + toRotate.getY()));
     }
+
+    /**
+     * Calculates the distance between a line and a point.
+     * @param first point of the line
+     * @param second point of the line
+     * @param click the point to calculate the distance to
+     * @return the distance between the line and the point
+     */
+    public static double distanceLineToPoint(Point first, Point second, Point click) {
+        double length = Values.distance(first, second);
+        if (length == 0) {
+            return Values.distance(click, first);
+        }
+
+        double projectionPosition = ((click.getX() - first.getX()) * (second.getX() - first.getX())
+                + (click.getY() - first.getY()) * (second.getY() - first.getY()))
+                / Math.pow(length, 2);
+        projectionPosition = Math.max(0, Math.min(1, projectionPosition));
+        return Values.distance(click,
+                new Point((int)(first.getX() + projectionPosition * (second.getX() - first.getX())),
+                        (int)(first.getY() + projectionPosition * (second.getY() - first.getY()))));
+    }
 }

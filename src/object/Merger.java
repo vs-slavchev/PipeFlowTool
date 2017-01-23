@@ -13,7 +13,7 @@ public class Merger extends ComponentWithImage {
 
     @Override
     public void showPropertiesDialog() {
-        // intentionally left empty
+        flowProperties.showOnlyCapacityInputDialog();
     }
 
     @Override

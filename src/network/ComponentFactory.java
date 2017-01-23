@@ -28,13 +28,16 @@ public class ComponentFactory {
     /**
      * Start building a pipe object by giving it a component to start from.
      * @param pipeInput the component the pipe starts from
+     * @return successful
      */
-    public void startPipe(Component pipeInput) {
+    public boolean startPipe(Component pipeInput) {
         if (pipeInput instanceof ComponentWithImage) {
             notFinished = new Pipe();
-            notFinished.addJoin((ComponentWithImage)pipeInput);
+            notFinished.addEndpoint((ComponentWithImage)pipeInput);
             notFinished.setInput(pipeInput);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -53,7 +56,7 @@ public class ComponentFactory {
         if (pipeOutput instanceof ComponentWithImage
                 && notFinished != null
                 && notFinished.getInput() != pipeOutput) {
-            notFinished.addJoin((ComponentWithImage)pipeOutput);
+            notFinished.addEndpoint((ComponentWithImage)pipeOutput);
             Pipe finished = notFinished;
             notFinished = null;
 

@@ -79,13 +79,21 @@ public class Simulation {
         return anyRemoved;
     }
 
-    public void startPlottingPipe(MouseEvent event) {
+    /**
+     * Start the pipe by giving it the start position
+     * @return successful
+     */
+    public boolean startPlottingPipe(MouseEvent event) {
         Optional<Component> selected = getObject(new Point((int) event.getX(), (int) event.getY()));
         if (selected.isPresent()) {
-            factory.startPipe(selected.get());
+            return factory.startPipe(selected.get());
         }
+        return false;
     }
 
+    /**
+     * Shows the properties dialog of whatever is on the click location
+     */
     public void showPropertiesOnLocation(Point clickLocation) {
         // try to select an object, if found - show properties
         Optional<Component> clicked = getObject(clickLocation);
@@ -104,6 +112,10 @@ public class Simulation {
         objectsToRemove.clear();
     }
 
+    /**
+     * Delete a specific component from the simulation.
+     * @param toRemove the component to remove
+     */
     private void deleteComponentFromSimulation(Component toRemove) {
         objectsToRemove.add(toRemove);
         // make components having the deleted one as their next one not point at it
@@ -132,14 +144,12 @@ public class Simulation {
         addComponent(created);
     }
 
-
     public void toggleSelectedOnLocation(Point clickLocation) {
         Optional<Component> clicked = getObject(clickLocation);
         if (clicked.isPresent()) {
             clicked.get().toggleSelected();
         }
     }
-
 
     public void finishPipeOnLocation(Point clickLocation) {
         Optional<Component> clicked = getObject(clickLocation);
@@ -155,8 +165,23 @@ public class Simulation {
         }
     }
 
+    /**
+     * Gives a stream of pipes that point to a specified component.
+     * Method mostly used by merger.
+     */
     public Stream<Component> getPipesPointingToComponent(Component pointedTo) {
         return objects.stream()
                 .filter(pipe -> pipe.getNext() == pointedTo);
+    }
+
+    /**
+     * Try to add a join to a pipe.
+     */
+    public void addPipeJoin(Point clickLocation) {
+        Optional<Component > component = getObject(clickLocation);
+        if (component.isPresent() && component.get() instanceof Pipe) {
+            Pipe pipe = (Pipe) component.get();
+            pipe.addJoin(clickLocation);
+        }
     }
 }

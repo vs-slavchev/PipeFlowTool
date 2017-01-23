@@ -12,8 +12,26 @@ public class Pipe extends Component {
     private ArrayList<Point> joins = new ArrayList<>();
     private Component input;
 
-    public void addJoin(ComponentWithImage component) {
+    public void addEndpoint(ComponentWithImage component) {
         joins.add(component.getCenterPosition());
+    }
+
+    public void addJoin(Point clickLocation) {
+        int indexToInsertAt = 0;
+        for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
+            Point firstOfPair = joins.get(firstOfPair_i);
+            Point secondOfPair = joins.get(firstOfPair_i + 1);
+
+            // identify which segment is clicked
+            if (Values.distanceLineToPoint(firstOfPair, secondOfPair, clickLocation)
+                    < Math.max(flowProperties.getCapacity(), Values.MIN_PIPE_CLICK_WIDTH)) {
+                indexToInsertAt = firstOfPair_i + 1;
+                break;
+            }
+        }
+        if (indexToInsertAt > 0) {
+            joins.add(indexToInsertAt, clickLocation);
+        }
     }
 
     @Override
@@ -24,7 +42,7 @@ public class Pipe extends Component {
 
             // one segment is clicked => the pipe is clicked
             if (Values.distanceLineToPoint(firstOfPair, secondOfPair, clickLocation)
-                    < Math.max(flowProperties.getCapacity(), 5)) {
+                    < Math.max(flowProperties.getCapacity(), Values.MIN_PIPE_CLICK_WIDTH)) {
                 return true;
             }
         }
@@ -35,7 +53,7 @@ public class Pipe extends Component {
     public void draw(GraphicsContext gc) {
         // draw wider part
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(flowProperties.getCapacity()*2 + 2);
+        gc.setLineWidth(calculateJointThickness());
         drawLinesOfPipe(gc);
 
         // draw thinner part
@@ -58,6 +76,10 @@ public class Pipe extends Component {
         drawArrowheads(gc);
     }
 
+    private int calculateJointThickness() {
+        return flowProperties.getCapacity() * 2 + 2;
+    }
+
     private void drawLinesOfPipe(GraphicsContext gc) {
         for (int firstOfPair_i = 0; firstOfPair_i < joins.size() - 1; firstOfPair_i++) {
             Point firstOfPair = joins.get(firstOfPair_i);
@@ -68,6 +90,9 @@ public class Pipe extends Component {
                     firstOfPair.getY(),
                     secondOfPair.getX(),
                     secondOfPair.getY());
+
+            gc.fillOval(firstOfPair.getX(), firstOfPair.getY(),
+                    calculateJointThickness(), calculateJointThickness());
         }
     }
 

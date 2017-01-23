@@ -16,6 +16,7 @@ public class Values {
             (int) Math.ceil(distance(new Point(0, 0), new Point(32, 32)));
     public static final int ARROW_WING_LENGTH = 30;
     public static final int WING_ANGLE = 30;
+    public static final int MIN_PIPE_CLICK_WIDTH = 5;
 
     /**
      * Calculates the distance between 2 points in 2D space.

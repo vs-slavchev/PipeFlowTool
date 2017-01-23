@@ -9,7 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import network.Point;
 import network.Simulation;
+import object.Component;
 import utility.CursorManager.CursorType;
+
+import java.util.Optional;
 
 /**
  * Responsible for the canvas: drawing, event handling.
@@ -53,9 +56,19 @@ public class CanvasPanel {
         dragOrigin = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
         isClick = true;
 
-        if (mouseEvent.getButton() == MouseButton.PRIMARY
-                && CursorManager.getCursorType() == CursorType.PIPE) {
-            simulation.startPlottingPipe(mouseEvent);
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            if (CursorManager.getCursorType() == CursorType.PIPE) {
+                if (!simulation.startPlottingPipe(mouseEvent)){
+                    simulation.addPipeJoin(dragOrigin);
+                }
+            } else if (CursorManager.getCursorType() == CursorType.POINTER) {
+                Optional<Component> found = simulation.getObject(dragOrigin);
+                if (found.isPresent()) {
+                    // if there is a component - move only it
+                    simulation.deselectAll();
+                    found.get().setSelected(true);
+                }
+            }
         }
 
         redraw();
@@ -86,7 +99,7 @@ public class CanvasPanel {
                     simulation.showPropertiesOnLocation(clickLocation);
                 } else if (CursorManager.getCursorType() == CursorType.DELETE) {
                     simulation.deleteOnLocation(clickLocation);
-                } else {
+                } else { // cursor is component type
                     simulation.createComponentOnLocation(clickLocation);
                 }
 

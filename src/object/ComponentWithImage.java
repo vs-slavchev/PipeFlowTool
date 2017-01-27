@@ -31,7 +31,7 @@ public abstract class ComponentWithImage extends Component implements Serializab
     @Override
     public boolean overlaps(Component other) {
         if (!this.equals(other)) {
-            if (other instanceof ComponentWithImage) { // temporary hack; TODO fix hack
+            if (other instanceof ComponentWithImage) {
                 return calculateCollisionBox().intersects(
                         ((ComponentWithImage) other).calculateCollisionBox().getBoundsInLocal());
             }

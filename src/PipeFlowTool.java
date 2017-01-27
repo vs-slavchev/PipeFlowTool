@@ -146,7 +146,6 @@ public class PipeFlowTool extends Application {
         FileChooser fileChooser = new FileChooser();
         configureFileChooser(fileChooser);
         File file = fileChooser.showOpenDialog(primaryStage);
-        //<-----------------------------Breakpoint here
         if (file != null) {
             try {
                 FileInputStream inputStream = new FileInputStream(file.getPath());

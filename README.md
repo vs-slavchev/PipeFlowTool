@@ -1,4 +1,4 @@
-# PipeFlowTool-OOD2
+# PipeFlowTool
 A simulation of a pipeline network.
 
 An application that allows the user to add, delete and configure the different components of a pipeline network and check its flow and capacity at different places.
